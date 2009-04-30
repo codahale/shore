@@ -7,22 +7,34 @@ import static org.mockito.Mockito.*;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.hibernate.annotations.common.reflection.XClass;
 import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import com.codahale.shore.modules.HibernateInitializer;
 import com.codahale.shore.modules.HibernateModule;
 import com.codahale.shore.modules.test.fixtures.Cat;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import com.google.common.collect.ImmutableList.Builder;
+import com.google.inject.Key;
+import com.google.inject.Stage;
+import com.google.inject.internal.InstanceBindingImpl;
+import com.google.inject.internal.ProviderInstanceBindingImpl;
+import com.google.inject.internal.Scoping;
+import com.google.inject.internal.UntargettedBindingImpl;
+import com.google.inject.spi.Element;
+import com.google.inject.spi.RecordingBinder;
+import com.wideplay.warp.persist.PersistenceService;
 
 @RunWith(Enclosed.class)
 public class HibernateModuleTest {
@@ -127,28 +139,62 @@ public class HibernateModuleTest {
 	}
 	
 	public static class Binding_The_Configuration extends Context {
+		private HibernateModule module;
+		
 		@Before
 		@Override
 		public void setup() throws Exception {
 			super.setup();
+			this.module = createModule();
 		}
 		
-		@Ignore("figure out testing Guice modules")
 		@Test
 		public void itBindsHibernateConfigurationToTheModuleConfiguration() throws Exception {
-			fail("not written yet");
+			final Map<Key<?>, Object> bindings = getBindings(module);
+			
+			assertThat(bindings.get(Key.get(Configuration.class)), sameInstance((Object) module.getConfiguration()));
 		}
 		
-		@Ignore("figure out testing Guice modules")
 		@Test
-		public void itInstallsWarpsPersistenceService() throws Exception {
-			fail("not written yet");
+		public void itInstallsWarpsHibernatePersistenceService() throws Exception {
+			final Map<Key<?>, Object> bindings = getBindings(module);
+			final String className = bindings.get(Key.get(PersistenceService.class)).getClass().getCanonicalName();
+			
+			assertThat(className, is("com.wideplay.warp.hibernate.HibernatePersistenceService"));
 		}
 		
-		@Ignore("figure out testing Guice modules")
 		@Test
 		public void itBindsAHibernateInitializerAsAnEagerSingleton() throws Exception {
-			fail("not written yet");
+			final Map<Key<?>, Object> bindings = getBindings(module);
+			final Scoping scoping = (Scoping) bindings.get(Key.get(HibernateInitializer.class));
+			
+			assertThat(scoping, is(Scoping.EAGER_SINGLETON));
+		}
+		
+		/*
+		 * HOLY CRAP THIS IS UGLY
+		 * 
+		 * Why yes. Yes it is. I haven't found a good way to accurately test
+		 * Guice modules, so I ended up pasting in a bunch of code and banging
+		 * it around until it worked. Fun, neh?
+		 */
+		private Map<Key<?>, Object> getBindings(HibernateModule module) {
+			final Map<Key<?>, Object> bindings = Maps.newLinkedHashMap();
+			final RecordingBinder binder = new RecordingBinder(Stage.PRODUCTION);
+			module.configure(binder);
+			for (Element element : binder.getElements()) {
+				if (element instanceof InstanceBindingImpl) {
+					final InstanceBindingImpl<?> binding = (InstanceBindingImpl<?>) element;
+					bindings.put(binding.getKey(), binding.getInstance());
+				} else if (element instanceof ProviderInstanceBindingImpl) {
+					final ProviderInstanceBindingImpl<?> binding = (ProviderInstanceBindingImpl<?>) element;
+					bindings.put(binding.getKey(), binding.getProviderInstance());
+				} else if (element instanceof UntargettedBindingImpl) {
+					final UntargettedBindingImpl<?> binding = (UntargettedBindingImpl<?>) element;
+					bindings.put(binding.getKey(), binding.getScoping());
+				}
+			}
+			return bindings;
 		}
 	}
 }
