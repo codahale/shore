@@ -12,6 +12,10 @@
 		<url>http://github.com/codahale/shore/tree</url>
 		<connection>scm:git:git://github.com/codahale/shore.git</connection>
 	</scm>
+	<issueManagement>
+		<system>Github</system>
+		<url>https://github.com/codahale/shore/issues</url>
+	</issueManagement>
 	<developers>
 		<developer>
 			<id>coda</id>
