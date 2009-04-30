@@ -1,5 +1,7 @@
 package com.codahale.shore.modules;
 
+import static com.google.common.base.Preconditions.*;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +13,6 @@ import javax.persistence.Entity;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -37,15 +38,11 @@ public class HibernateModule extends AbstractModule {
 	 * @param properties
 	 */
 	public HibernateModule(Logger logger, Properties properties, Collection<Package> entityPackages) {
-		Preconditions.checkNotNull(logger);
-		Preconditions.checkNotNull(properties);
-		Preconditions.checkNotNull(entityPackages);
-		
-		this.logger = logger;
+		this.logger = checkNotNull(logger);
 		this.configuration = new AnnotationConfiguration();
-		configuration.addProperties(properties);
+		configuration.addProperties(checkNotNull(properties));
 		configureRequiredProperties(configuration);
-		addAnnotatedEntities(configuration, entityPackages);
+		addAnnotatedEntities(configuration, checkNotNull(entityPackages));
 	}
 
 	private void addAnnotatedEntities(AnnotationConfiguration configuration,
