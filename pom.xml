@@ -4,6 +4,7 @@
 	<groupId>com.codahale</groupId>
 	<artifactId>shore</artifactId>
 	<version>0.1-SNAPSHOT</version>
+	<name>Shore</name>
 	<description>It makes Jersey fun.</description>
 	<inceptionYear>2009</inceptionYear>
 	<url>http://github.com/codahale/shore/tree</url>
