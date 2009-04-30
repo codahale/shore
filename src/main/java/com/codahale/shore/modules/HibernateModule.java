@@ -92,7 +92,7 @@ public class HibernateModule extends AbstractModule {
 				.across(UnitOfWork.REQUEST)
 				.buildModule()
 		);
-//		bind(HibernateInitializer.class).asEagerSingleton();
+		bind(HibernateInitializer.class).asEagerSingleton();
 	}
 	
 	public AnnotationConfiguration getConfiguration() {
