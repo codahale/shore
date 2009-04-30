@@ -27,7 +27,7 @@ public class AbstractDAO {
 	 * 
 	 * @return the current session
 	 */
-	protected Session session() {
+	protected Session currentSession() {
 		return provider.get();
 	}
 }

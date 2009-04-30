@@ -25,7 +25,7 @@ public class AbstractDAOTest {
 		}
 		
 		public Session getSession() {
-			return session();
+			return currentSession();
 		}
 	}
 	
