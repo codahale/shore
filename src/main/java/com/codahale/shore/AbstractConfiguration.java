@@ -56,8 +56,7 @@ public abstract class AbstractConfiguration {
 	 * @param entityPackage a package containing Hibernate entity classes
 	 */
 	protected void addEntityPackage(Package entityPackage) {
-		checkNotNull(entityPackage);
-		entityPackages.add(entityPackage);
+		entityPackages.add(checkNotNull(entityPackage));
 	}
 	
 	/**
@@ -66,8 +65,7 @@ public abstract class AbstractConfiguration {
 	 * @param module a Guice module
 	 */
 	protected void addModule(Module module) {
-		checkNotNull(module);
-		modules.add(module);
+		modules.add(checkNotNull(module));
 	};
 	
 	/**
@@ -77,8 +75,7 @@ public abstract class AbstractConfiguration {
 	 * @param resourcePackage a package containing Jersey classes
 	 */
 	protected void addResourcePackage(Package resourcePackage) {
-		checkNotNull(resourcePackage);
-		resourcePackages.add(resourcePackage);
+		resourcePackages.add(checkNotNull(resourcePackage));
 	}
 	
 	/**
@@ -88,10 +85,8 @@ public abstract class AbstractConfiguration {
 	 * @param urlPattern the URL pattern for requests to filter
 	 */
 	protected void addServletFilter(Class<? extends Filter> filterClass, String urlPattern) {
-		checkNotNull(filterClass);
-		checkNotNull(urlPattern);
-		final FilterHolder holder = new FilterHolder(filterClass);
-		servletFilters.put(holder, urlPattern);
+		final FilterHolder holder = new FilterHolder(checkNotNull(filterClass));
+		servletFilters.put(holder, checkNotNull(urlPattern));
 	};
 	
 	/**
@@ -101,9 +96,7 @@ public abstract class AbstractConfiguration {
 	 * @param urlPattern the URL pattern for requests to filter
 	 */
 	protected void addServletFilter(FilterHolder holder, String urlPattern) {
-		checkNotNull(holder);
-		checkNotNull(urlPattern);
-		servletFilters.put(holder, urlPattern);
+		servletFilters.put(checkNotNull(holder), checkNotNull(urlPattern));
 	}
 	
 	/**
@@ -164,7 +157,6 @@ public abstract class AbstractConfiguration {
 	 * @param stage Guice's stage
 	 */
 	protected void setStage(Stage stage) {
-		checkNotNull(stage);
-		this.stage = stage;
+		this.stage = checkNotNull(stage);
 	}
 }
