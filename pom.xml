@@ -27,8 +27,7 @@
 		<license>
 			<name>The MIT License</name>
 			<distribution>repo</distribution>
-			<url>http://www.opensource.org/licenses/mit-license.php</url>
-			<comments>Copyright © 2009 Coda Hale</comments>
+			<url>COPYING.txt</url>
 		</license>
 	</licenses>
 	<properties>
