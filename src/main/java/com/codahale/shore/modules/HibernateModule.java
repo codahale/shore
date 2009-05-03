@@ -37,7 +37,7 @@ public class HibernateModule extends AbstractModule {
 	 * 
 	 * @param properties
 	 */
-	public HibernateModule(Logger logger, Properties properties, Collection<Package> entityPackages) {
+	public HibernateModule(Logger logger, Properties properties, Collection<String> entityPackages) {
 		this.logger = checkNotNull(logger);
 		this.configuration = new AnnotationConfiguration();
 		configuration.addProperties(checkNotNull(properties));
@@ -46,12 +46,12 @@ public class HibernateModule extends AbstractModule {
 	}
 
 	private void addAnnotatedEntities(AnnotationConfiguration configuration,
-			Iterable<Package> entityPackages) {
+			Iterable<String> entityPackages) {
 		final AnnotatedClassScanner scanner = new AnnotatedClassScanner(Entity.class);
 		final List<String> entityClasses = Lists.newLinkedList();
-		for (Package entityPackage : entityPackages) {
-			logger.info("Scanning " + entityPackage.getName() + " for entity classes");
-			for (Class<?> entityClass : scanner.scan(new String[] { entityPackage.getName() })) {
+		for (String entityPackage : entityPackages) {
+			logger.info("Scanning " + entityPackage + " for entity classes");
+			for (Class<?> entityClass : scanner.scan(new String[] { entityPackage })) {
 				configuration.addAnnotatedClass(entityClass);
 				entityClasses.add(entityClass.getCanonicalName());
 			}

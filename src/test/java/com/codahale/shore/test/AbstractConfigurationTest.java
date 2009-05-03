@@ -42,8 +42,8 @@ public class AbstractConfigurationTest {
 		
 		@Override
 		protected void configure() {
-			addEntityPackage(Package.getPackage("com.codahale.shore.test"));
-			addResourcePackage(Package.getPackage("com.codahale.shore.test"));
+			addEntityPackage("com.codahale.shore.test");
+			addResourcePackage("com.codahale.shore.test");
 			addModule(MOCK_MODULE);
 			setStage(Stage.PRODUCTION);
 			addServletFilter(GzipFilter.class, "/*");
@@ -69,7 +69,7 @@ public class AbstractConfigurationTest {
 		public void itHasAListOfEntityPackages() throws Exception {
 			assertThat(
 				config.getEntityPackages(),
-				hasItem(Package.getPackage("com.codahale.shore.test"))
+				hasItem("com.codahale.shore.test")
 			);
 		}
 		
@@ -77,7 +77,7 @@ public class AbstractConfigurationTest {
 		public void itHasAListOfResourcePackages() throws Exception {
 			assertThat(
 				config.getResourcePackages(),
-				hasItem(Package.getPackage("com.codahale.shore.test"))
+				hasItem("com.codahale.shore.test")
 			);
 		}
 		

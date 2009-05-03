@@ -30,9 +30,9 @@ import com.google.inject.Stage;
  * public class MyConfiguration extends AbstractConfiguration {
  * 		@Override
  * 		protected void configure() {
- * 			addEntityPackage(Package.getInstance("com.example.myapp.entities"));
- * 			addResourcePackage(Package.getInstance("com.example.myapp.resources"));
- * 			addResourcePackage(Package.getInstance("com.example.myapp.providers"));
+ * 			addEntityPackage("com.example.myapp.entities");
+ * 			addResourcePackage("com.example.myapp.resources");
+ * 			addResourcePackage("com.example.myapp.providers");
  * 			addModule(new DAOModule());
  * 			setStage(Stage.PRODUCTION);
  * 			addServletFilter(GzipFilter.class, "/*");
@@ -44,8 +44,8 @@ import com.google.inject.Stage;
  *
  */
 public abstract class AbstractConfiguration {
-	private final List<Package> entityPackages = Lists.newLinkedList();
-	private final List<Package> resourcePackages = Lists.newLinkedList();
+	private final List<String> entityPackages = Lists.newLinkedList();
+	private final List<String> resourcePackages = Lists.newLinkedList();
 	private final List<Module> modules = Lists.newLinkedList();
 	private final Map<FilterHolder, String> servletFilters = Maps.newLinkedHashMap();
 	private Stage stage = Stage.DEVELOPMENT;
@@ -55,7 +55,7 @@ public abstract class AbstractConfiguration {
 	 * 
 	 * @param entityPackage a package containing Hibernate entity classes
 	 */
-	protected void addEntityPackage(Package entityPackage) {
+	protected void addEntityPackage(String entityPackage) {
 		entityPackages.add(checkNotNull(entityPackage));
 	}
 	
@@ -74,7 +74,7 @@ public abstract class AbstractConfiguration {
 	 * 
 	 * @param resourcePackage a package containing Jersey classes
 	 */
-	protected void addResourcePackage(Package resourcePackage) {
+	protected void addResourcePackage(String resourcePackage) {
 		resourcePackages.add(checkNotNull(resourcePackage));
 	}
 	
@@ -119,7 +119,7 @@ public abstract class AbstractConfiguration {
 	/**
 	 * Returns a list of Hibernate entity packages.
 	 */
-	public List<Package> getEntityPackages() {
+	public List<String> getEntityPackages() {
 		return ImmutableList.copyOf(entityPackages);
 	}
 	
@@ -133,7 +133,7 @@ public abstract class AbstractConfiguration {
 	/**
 	 * Returns a list of Jersey resource/provider packages.
 	 */
-	public List<Package> getResourcePackages() {
+	public List<String> getResourcePackages() {
 		return ImmutableList.copyOf(resourcePackages);
 	}
 	

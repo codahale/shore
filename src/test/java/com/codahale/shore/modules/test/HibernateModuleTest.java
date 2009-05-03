@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import org.hibernate.annotations.common.reflection.XClass;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -22,7 +23,6 @@ import org.junit.runner.RunWith;
 
 import com.codahale.shore.modules.HibernateInitializer;
 import com.codahale.shore.modules.HibernateModule;
-import com.codahale.shore.modules.test.fixtures.Cat;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.ImmutableList.Builder;
@@ -47,14 +47,20 @@ public class HibernateModuleTest {
 		}
 		
 		protected HibernateModule createModule() throws Exception {
-			final Properties fixtureProperties = new Properties();
-			fixtureProperties.load(ClassLoader.getSystemResource("hibernate-module-fixture.properties").openStream());
-			final Package fixturePackage = Package.getPackage(Cat.class.getCanonicalName().replace(".Cat", ""));
+			final Properties properties = new Properties();
+			properties.setProperty(Environment.DIALECT, "org.hibernate.dialect.HSQLDialect");
+			properties.setProperty(Environment.DRIVER, "org.hsqldb.jdbcDriver");
+			properties.setProperty(Environment.USER, "sa");
+			properties.setProperty(Environment.PASS, "");
+			properties.setProperty(Environment.URL, "jdbc:hsqldb:mem:ShoreServerCommandTest");
+			properties.setProperty(Environment.POOL_SIZE, "1");
+			properties.setProperty(Environment.SHOW_SQL, "true");
+			properties.setProperty(Environment.HBM2DDL_AUTO, "create-drop");
 			
 			return new HibernateModule(
 				logger,
-				fixtureProperties,
-				ImmutableList.of(fixturePackage)
+				properties,
+				ImmutableList.of("com.codahale.shore.modules.test.fixtures")
 			);
 		}
 	}
