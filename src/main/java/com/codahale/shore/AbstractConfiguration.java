@@ -159,4 +159,11 @@ public abstract class AbstractConfiguration {
 	protected void setStage(Stage stage) {
 		this.stage = checkNotNull(stage);
 	}
+	
+	/**
+	 * Returns the application binary's names.
+	 * 
+	 * @return the application binary's name
+	 */
+	public abstract String getExecutableName();
 }

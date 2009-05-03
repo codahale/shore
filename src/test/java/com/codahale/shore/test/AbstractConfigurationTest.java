@@ -36,6 +36,11 @@ public class AbstractConfigurationTest {
 	
 	private static class MockConfiguration extends AbstractConfiguration {
 		@Override
+		public String getExecutableName() {
+			return "dingo";
+		}
+		
+		@Override
 		protected void configure() {
 			addEntityPackage(Package.getPackage("com.codahale.shore.test"));
 			addResourcePackage(Package.getPackage("com.codahale.shore.test"));
