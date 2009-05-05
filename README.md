@@ -5,9 +5,10 @@ Shore
 
 Shore is a web application framework which ties together
 [Jersey](https://jersey.dev.java.net/), [Jetty](http://www.mortbay.org/jetty/), 
-[Hibernate](https://www.hibernate.org/), and 
-[Guice](http://code.google.com/p/google-guice/) into an awesome foundation for 
-data-backed, RESTful web services in Java.
+[Hibernate](https://www.hibernate.org/), 
+[Guice](http://code.google.com/p/google-guice/), and 
+[Warp-Persist](http://code.google.com/p/warp-persist/) into an awesome 
+foundation for RDBMS-backed, RESTful web services in Java.
 
 How To Write A Shore Application
 --------------------------------
