@@ -16,8 +16,4 @@ public class IntegrationTestConfig extends AbstractConfiguration {
 	public String getExecutableName() {
 		return "test";
 	}
-	
-	public void doConfigure() {
-		configure();
-	}
 }

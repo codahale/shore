@@ -63,6 +63,7 @@ public class SchemaCommand implements Runnable {
 	
 	@Override
 	public void run() {
+		configuration.configure();
 		final PrintWriter writer = new PrintWriter(output);
 		
 		try {

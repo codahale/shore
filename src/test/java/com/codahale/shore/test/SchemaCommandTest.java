@@ -69,7 +69,6 @@ public class SchemaCommandTest {
 			properties.setProperty(Environment.URL, "jdbc:hsqldb:mem:ShoreSchemaTest");
 			this.output = new ByteArrayOutputStream();
 			this.configuration = new IntegrationTestConfig();
-			configuration.doConfigure();
 			this.cmd = new SchemaCommand(configuration, properties, false, output);
 		}
 		
@@ -103,7 +102,6 @@ public class SchemaCommandTest {
 			properties.setProperty(Environment.URL, "jdbc:hsqldb:mem:ShoreMigrationTest");
 			this.output = new ByteArrayOutputStream();
 			this.configuration = new IntegrationTestConfig();
-			configuration.doConfigure();
 			this.cmd = new SchemaCommand(configuration, properties, true, output);
 		}
 		
@@ -136,7 +134,6 @@ public class SchemaCommandTest {
 			properties.setProperty(Environment.DRIVER, "org.hsqldbFAKE.jdbcDriver");
 			this.output = new ByteArrayOutputStream();
 			this.configuration = new IntegrationTestConfig();
-			configuration.doConfigure();
 			this.cmd = new SchemaCommand(configuration, properties, true, output);
 		}
 		
