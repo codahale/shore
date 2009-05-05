@@ -4,7 +4,7 @@ import org.mortbay.servlet.GzipFilter;
 
 import com.codahale.shore.AbstractConfiguration;
 
-class IntegrationTestConfig extends AbstractConfiguration {
+public class IntegrationTestConfig extends AbstractConfiguration {
 	@Override
 	protected void configure() {
 		addResourcePackage("com.codahale.shore.integration.test");
@@ -15,5 +15,9 @@ class IntegrationTestConfig extends AbstractConfiguration {
 	@Override
 	public String getExecutableName() {
 		return "test";
+	}
+	
+	public void doConfigure() {
+		configure();
 	}
 }
