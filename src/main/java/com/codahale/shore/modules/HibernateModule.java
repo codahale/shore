@@ -47,9 +47,10 @@ public class HibernateModule extends AbstractModule {
 
 	private void addAnnotatedEntities(AnnotationConfiguration configuration,
 			Iterable<String> entityPackages) {
+		checkNotNull(configuration);
 		final AnnotatedClassScanner scanner = new AnnotatedClassScanner(Entity.class);
 		final List<String> entityClasses = Lists.newLinkedList();
-		for (String entityPackage : entityPackages) {
+		for (String entityPackage : checkNotNull(entityPackages)) {
 			logger.info("Scanning " + entityPackage + " for entity classes");
 			for (Class<?> entityClass : scanner.scan(new String[] { entityPackage })) {
 				configuration.addAnnotatedClass(entityClass);

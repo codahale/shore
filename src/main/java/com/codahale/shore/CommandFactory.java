@@ -1,5 +1,7 @@
 package com.codahale.shore;
 
+import static com.google.common.base.Preconditions.*;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -44,11 +46,12 @@ public class CommandFactory {
 	 * @param configuration the application's configuration
 	 */
 	public CommandFactory(AbstractConfiguration configuration) {
-		this.configuration = configuration;
+		this.configuration = checkNotNull(configuration);
 		this.parser = new GnuParser();
 	}
 	
 	public Runnable getCommand(String... arguments) {
+		checkNotNull(arguments);
 		if (isCommand(arguments, "server")) {
 			return buildServerCommand(arguments);
 		} else if (isCommand(arguments, "schema")) {

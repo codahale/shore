@@ -1,5 +1,7 @@
 package com.codahale.shore;
 
+import static com.google.common.base.Preconditions.*;
+
 import java.util.Properties;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
@@ -45,9 +47,9 @@ public class ServerCommand implements Runnable {
 	 *            the connection properties
 	 */
 	public ServerCommand(AbstractConfiguration configuration, int port, Properties properties) {
-		this.configuration = configuration;
+		this.configuration = checkNotNull(configuration);
 		this.port = port;
-		this.properties = properties;
+		this.properties = checkNotNull(properties);
 	}
 	
 	public AbstractConfiguration getConfiguration() {

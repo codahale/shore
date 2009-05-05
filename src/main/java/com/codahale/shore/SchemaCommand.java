@@ -1,5 +1,7 @@
 package com.codahale.shore;
 
+import static com.google.common.base.Preconditions.*;
+
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -24,7 +26,7 @@ public class SchemaCommand implements Runnable {
 	private final AbstractConfiguration configuration;
 	private final Properties properties;
 	private final boolean migration;
-	private final OutputStream output;
+	private final OutputStream outputStream;
 	
 	/**
 	 * Creates a new {@link SchemaCommand}.
@@ -35,14 +37,14 @@ public class SchemaCommand implements Runnable {
 	 *            the connection properties
 	 * @param migration
 	 *            if {@code true}, generate a migration script
-	 * @param output
+	 * @param outputStream
 	 *            the stream to write the script to
 	 */
-	public SchemaCommand(AbstractConfiguration configuration, Properties properties, boolean migration, OutputStream output) {
-		this.configuration = configuration;
-		this.properties = properties;
+	public SchemaCommand(AbstractConfiguration configuration, Properties properties, boolean migration, OutputStream outputStream) {
+		this.configuration = checkNotNull(configuration);
+		this.properties = checkNotNull(properties);
 		this.migration = migration;
-		this.output = output;
+		this.outputStream = checkNotNull(outputStream);
 	}
 	
 	public AbstractConfiguration getConfiguration() {
@@ -58,7 +60,7 @@ public class SchemaCommand implements Runnable {
 	}
 	
 	public OutputStream getOutputStream() {
-		return output;
+		return outputStream;
 	}
 	
 	@Override
@@ -67,7 +69,7 @@ public class SchemaCommand implements Runnable {
 		Logger.getLogger("com.mchange").setLevel(Level.OFF);
 		configuration.configure();
 		
-		final PrintWriter writer = new PrintWriter(output);
+		final PrintWriter writer = new PrintWriter(outputStream);
 		
 		try {
 			final Logger silentLogger = Logger.getLogger(SchemaCommand.class.getCanonicalName());

@@ -1,5 +1,7 @@
 package com.codahale.shore.modules;
 
+import static com.google.common.base.Preconditions.*;
+
 import com.google.inject.Inject;
 import com.wideplay.warp.persist.PersistenceService;
 
@@ -11,6 +13,6 @@ import com.wideplay.warp.persist.PersistenceService;
 public class HibernateInitializer {
 	@Inject
 	public HibernateInitializer(PersistenceService service) {
-		service.start();
+		checkNotNull(service).start();
 	}
 }
