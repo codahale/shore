@@ -12,7 +12,7 @@ data-backed, RESTful web services in Java.
 How To Write A Shore Application
 --------------------------------
 
-First, write an entity class:
+### Step 1: Write an entity class
 
     @Entity
     @Table(name="widgets")
@@ -36,17 +36,19 @@ First, write an entity class:
       public void setDescription(String description) { this.description = description; }
     }
 
-Then, write a DAO interface:
+### Step 2: Write a Data Access Object (DAO)
+
+First the interface:
     
     public interface WidgetDAO {
       public abstract Widget findByName(String name);
       public abstract Widget save(Widget widget);
     }
 
-Then implement the DAO:
+Then the implementation:
     
     public class WidgetDAOImpl extends AbstractDAO implements WidgetDAO {
-
+      
       @Inject
       public WidgetDAOImpl(Provider<Session> provider) {
         super(provider);
@@ -70,14 +72,14 @@ Then implement the DAO:
       
     }
     
-And then associate the DAO interface with the implementation:
+Then associate the DAO interface with the implementation:
     
     @ImplementedBy(WidgetDAOImpl.class)
     public interface WidgetDAO {
       // ...
     }
 
-Then write a resource:
+### Step 3: Write a resource
     
     @Path("/widget/{name}")
     @Produces(MediaType.TEXT_PLAIN)
@@ -116,7 +118,7 @@ Then write a resource:
       }
     }
 
-And add your configuration:
+### Step 4: Write a configuration
     
     public class WidgetApiConfig extends AbstractConfiguration {
       @Override
@@ -131,7 +133,7 @@ And add your configuration:
       }
     }
 
-Then write your main class:
+### Step 5: Write a main class
     
     public class WidgetAPI {
       public static void main(String[] args) throws Exception {
@@ -139,7 +141,10 @@ Then write your main class:
       }
     }
 
-And add some configuration details to `development.properties`:
+
+### Step 6: Configure the connection:
+
+Add some configuration details to `development.properties`:
     
     hibernate.connection.username=sa
     hibernate.connection.password=
@@ -149,15 +154,28 @@ And add some configuration details to `development.properties`:
     hibernate.connection.driver_class=org.hsqldb.jdbcDriver
     hibernate.hbm2ddl.auto=create-drop
 
-Now you're ready to generate a schema:
+(This assumes you're using the [HSQLDB](http://hsqldb.org/) drivers.)
+
+### Step 7: Run it!
+
+By executing the main class (`WidgetAPI`, in this case) you can:
+
+#### Generate a drop-and-create SQL schema script
     
     java -jar widget-api.jar schema --config=development.properties
 
-Or generate a migration script, if the database already has stuff in it:
+This doesn't actually modify the database -- it just outputs the SQL to the
+console. You can copy and paste it into your database or pipe it into a
+database client process once you've verified the SQL.
+
+#### Generate a migration SQL schema script
     
     java -jar widget-api.jar schema --config=development.properties --migration
 
-Then run it:
+This generates a non-destructive migration to bring the database schema up to 
+date. **N.B.:** It's not perfect -- you may need to make some changes yourself.
+
+#### Run an HTTP server
     
     java -jar widget-api.jar server --config=development.properties --port=8080
 
