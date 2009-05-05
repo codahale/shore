@@ -117,7 +117,7 @@ Then write a resource:
 
 And add your configuration:
     
-    class WidgetApiConfig extends AbstractConfiguration {
+    public class WidgetApiConfig extends AbstractConfiguration {
       @Override
       protected void configure() {
         addResourcePackage("<name of the package where WidgetResource is>");
