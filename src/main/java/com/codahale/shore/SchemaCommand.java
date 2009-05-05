@@ -63,7 +63,10 @@ public class SchemaCommand implements Runnable {
 	
 	@Override
 	public void run() {
+		Logger.getLogger("org.hibernate").setLevel(Level.OFF);
+		Logger.getLogger("com.mchange").setLevel(Level.OFF);
 		configuration.configure();
+		
 		final PrintWriter writer = new PrintWriter(output);
 		
 		try {

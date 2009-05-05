@@ -8,8 +8,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.OutputStream;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.hibernate.cfg.Environment;
 import org.junit.Before;
@@ -61,9 +59,6 @@ public class SchemaCommandTest {
 		
 		@Before
 		public void setup() throws Exception {
-			Logger.getLogger("org.hibernate").setLevel(Level.OFF);
-			Logger.getLogger("com.mchange").setLevel(Level.OFF);
-			
 			this.properties = new Properties();
 			properties.load(new FileReader("src/test/resources/hsql-memory.properties"));
 			properties.setProperty(Environment.URL, "jdbc:hsqldb:mem:ShoreSchemaTest");
@@ -94,9 +89,6 @@ public class SchemaCommandTest {
 		
 		@Before
 		public void setup() throws Exception {
-			Logger.getLogger("org.hibernate").setLevel(Level.OFF);
-			Logger.getLogger("com.mchange").setLevel(Level.OFF);
-			
 			this.properties = new Properties();
 			properties.load(new FileReader("src/test/resources/hsql-memory.properties"));
 			properties.setProperty(Environment.URL, "jdbc:hsqldb:mem:ShoreMigrationTest");
@@ -126,9 +118,6 @@ public class SchemaCommandTest {
 		
 		@Before
 		public void setup() throws Exception {
-			Logger.getLogger("org.hibernate").setLevel(Level.OFF);
-			Logger.getLogger("com.mchange").setLevel(Level.OFF);
-			
 			this.properties = new Properties();
 			properties.load(new FileReader("src/test/resources/hsql-memory.properties"));
 			properties.setProperty(Environment.DRIVER, "org.hsqldbFAKE.jdbcDriver");
