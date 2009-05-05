@@ -41,7 +41,7 @@ public class HelpCommand implements Runnable {
 	@Override
 	public void run() {
 		final PrintWriter out = new PrintWriter(outputStream);
-		out.append(text);
+		out.println(text);
 		out.flush();
 	}
 }

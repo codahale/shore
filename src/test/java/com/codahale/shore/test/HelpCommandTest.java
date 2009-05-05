@@ -39,7 +39,8 @@ public class HelpCommandTest {
 			cmd.run();
 			
 			assertThat(output.toString(), is(
-				"Usage: woo"
+				"Usage: woo" +
+				"\n"
 			));
 		}
 	}
