@@ -148,9 +148,17 @@ And add some configuration details to `development.properties`:
     hibernate.connection.driver_class=org.hsqldb.jdbcDriver
     hibernate.hbm2ddl.auto=create-drop
 
+Now you're ready to generate a schema:
+    
+    java -jar widget-api.jar schema --config=development.properties
+
+Or generate a migration script, if the database already has stuff in it:
+    
+    java -jar widget-api.jar schema --config=development.properties --migration
+
 Then run it:
     
-    java -jar widget-api.jar --file=development.properties --port=8080
+    java -jar widget-api.jar server --config=development.properties --port=8080
 
 And use it:
     
