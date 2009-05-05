@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
 
-import org.apache.commons.cli.Options;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -17,30 +16,17 @@ import com.codahale.shore.HelpCommand;
 public class HelpCommandTest {
 	public static class A_Help_Command {
 		private HelpCommand cmd;
-		private Options options;
 		private ByteArrayOutputStream output;
 		
 		@Before
 		public void setup() throws Exception {
 			this.output = new ByteArrayOutputStream();
-			this.options = new Options().addOption("h", false, "Show this help message");
-			
-			this.cmd = new HelpCommand("woo", "Couldn't open pickle jar.", options, output);
+			this.cmd = new HelpCommand("Usage: woo", output);
 		}
 		
 		@Test
-		public void itHasAName() throws Exception {
-			assertThat(cmd.getName(), is("woo"));
-		}
-		
-		@Test
-		public void itHasAnErrorMessage() throws Exception {
-			assertThat(cmd.getErrorMessage(), is("Couldn't open pickle jar."));
-		}
-		
-		@Test
-		public void itHasASetOfOptions() throws Exception {
-			assertThat(cmd.getOptions(), is(sameInstance(options)));
+		public void itHasText() throws Exception {
+			assertThat(cmd.getText(), is("Usage: woo"));
 		}
 		
 		@Test
@@ -49,25 +35,11 @@ public class HelpCommandTest {
 		}
 		
 		@Test
-		public void itPrintsAHelpMessageForTheOptionsToTheOutputStream() throws Exception {
+		public void itPrintsTheTextToTheOutputStream() throws Exception {
 			cmd.run();
 			
 			assertThat(output.toString(), is(
-				"Error: Couldn't open pickle jar.\n\n" +
-				"usage: woo [-h]\n" +
-				" -h   Show this help message\n"
-			));
-		}
-		
-		@Test
-		public void itDoesntPrintAnErrorMessageIfThereIsNone() throws Exception {
-			final HelpCommand regularCmd = new HelpCommand("woo", null, options, output);
-			
-			regularCmd.run();
-			
-			assertThat(output.toString(), is(
-				"usage: woo [-h]\n" +
-				" -h   Show this help message\n"
+				"Usage: woo"
 			));
 		}
 	}

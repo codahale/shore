@@ -3,11 +3,12 @@ package com.codahale.shore;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
@@ -18,8 +19,24 @@ import org.apache.commons.cli.ParseException;
  *
  */
 public class CommandFactory {
+	private final static String MAIN_USAGE_TEMPLATE =
+				"usage: {app} <subcommand> [options]\n" +
+				"\n" +
+				"Available subcommands:\n" +
+				"   server\t\tRun {app} as an HTTP server.\n" +
+				"   schema\tGenerate a database schema for {app}.\n" +
+				"\n" +
+				"Type '{app} <subcommand> --help' for help on a specific subcommand.";
+	private final static String SERVER_USAGE_TEMPLATE =
+				"usage: {app} server -c <file> -p <port>\n" +
+				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
+				"   -p, --port=PORT\tWhich port to bind to";
+	private final static String SCHEMA_USAGE_TEMPLATE =
+		"usage: {app} schema -c <file> [--migration]\n" +
+		"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
+		"   --migration\t\tGenerate a migration script";
 	private final AbstractConfiguration configuration;
-	private final Options options;
+	private final GnuParser parser;
 	
 	/**
 	 * Creates a new {@link CommandFactory} for an application.
@@ -28,60 +45,121 @@ public class CommandFactory {
 	 */
 	public CommandFactory(AbstractConfiguration configuration) {
 		this.configuration = configuration;
-		this.options = new Options();
-		options.addOption("p", "port", true, "port to listen on");
-		options.addOption("f", "file", true, "filename of config file");
-		options.addOption("h", "help", false, "show this help message");
+		this.parser = new GnuParser();
+	}
+	
+	public Runnable getCommand(String... arguments) {
+		if (isCommand(arguments, "server")) {
+			return buildServerCommand(arguments);
+		} else if (isCommand(arguments, "schema")) {
+			return buildSchemaCommand(arguments);
+		}
+		
+		return new HelpCommand(mainUsage(), System.out);
 	}
 
-	/**
-	 * Parses {@code arguments} and returns either {@link ServerCommand} or
-	 * {@link HelpCommand}.
-	 * 
-	 * @param arguments an array of command line arguments
-	 * @return either {@link ServerCommand} or {@link HelpCommand}
-	 */
-	public Runnable getCommand(String... arguments) {
-		final CommandLineParser parser = new GnuParser();
+	private Runnable buildSchemaCommand(String[] arguments) {
+		final String[] subArgs = getSubArgs(arguments);
+		
+		if (isHelpCommand(subArgs)) {
+			return new HelpCommand(schemaUsage(null), System.out);
+		}
+		
+		final Options options = new Options();
+		
+		final Option configOption = new Option("c", "config", true, null);
+		configOption.setRequired(true);
+		options.addOption(configOption);
+		
+		options.addOption(null, "migration", false, null);
+		
 		try {
-			final CommandLine line = parser.parse(options, arguments);
+			final CommandLine cmdLine = parser.parse(options, subArgs);
 			
-			if (arguments.length == 0 || line.hasOption("h")) {
-				return buildHelpCommand(null);
-			}
+			final Properties properties = new Properties();
+			properties.load(new FileReader(cmdLine.getOptionValue("c")));
 			
-			if (!line.hasOption("f")) {
-				return buildHelpCommand("--file is required.");
-			}
+			final boolean migration = cmdLine.hasOption("migration");
 			
-			if (!line.hasOption("p")) {
-				return buildHelpCommand("--port is required.");
-			}
-			
-			final String filename = line.getOptionValue("f");
-			final String port = line.getOptionValue("p");
-			
-			try {
-				final Properties properties = new Properties();
-				properties.load(new FileReader(filename));
-				
-				return new ServerCommand(configuration, Integer.valueOf(port), properties);
-				
-			} catch (NumberFormatException e) {
-				return buildHelpCommand(port + " is not a valid port number.");
-			} catch (FileNotFoundException e) {
-				return buildHelpCommand(filename + " does not exist.");
-			} catch (IOException e) {
-				return buildHelpCommand(filename + " could not be read.");
-			}
-			
+			return new SchemaCommand(configuration, properties, migration, System.out);
 		} catch (ParseException e) {
-			return buildHelpCommand(e.getMessage());
+			return new HelpCommand(schemaUsage(e.getMessage()), System.out);
+		} catch (FileNotFoundException e) {
+			return new HelpCommand(schemaUsage("Config file does not exist"), System.out);
+		} catch (IOException e) {
+			return new HelpCommand(schemaUsage("Unable to read config file"), System.out);
 		}
 	}
 
-	private HelpCommand buildHelpCommand(final String msg) {
-		return new HelpCommand(configuration.getExecutableName(), msg, options, System.err);
+	
+
+	private boolean isCommand(String[] arguments, String command) {
+		return arguments.length > 0 && arguments[0].equals(command);
 	}
 
+	private Runnable buildServerCommand(String[] arguments) {
+		final String[] subArgs = getSubArgs(arguments);
+		
+		if (isHelpCommand(subArgs)) {
+			return new HelpCommand(serverUsage(null), System.out);
+		}
+		
+		final Options options = new Options();
+		
+		final Option configOption = new Option("c", "config", true, null);
+		configOption.setRequired(true);
+		options.addOption(configOption);
+		
+		final Option portOption = new Option("p", "port", true, null);
+		portOption.setRequired(true);
+		options.addOption(portOption);
+		
+		try {
+			
+			final CommandLine cmdLine = parser.parse(options, subArgs);
+			
+			final Properties properties = new Properties();
+			properties.load(new FileReader(cmdLine.getOptionValue("c")));
+			
+			final int port = Integer.valueOf(cmdLine.getOptionValue("p"));
+			
+			return new ServerCommand(configuration, port, properties);
+		} catch (ParseException e) {
+			return new HelpCommand(serverUsage(e.getMessage()), System.out);
+		} catch (FileNotFoundException e) {
+			return new HelpCommand(serverUsage("Config file does not exist"), System.out);
+		} catch (IOException e) {
+			return new HelpCommand(serverUsage("Unable to read config file"), System.out);
+		} catch (NumberFormatException e) {
+			return new HelpCommand(serverUsage("Invalid port number"), System.out);
+		}
+	}
+
+	private boolean isHelpCommand(final String[] subArgs) {
+		return subArgs.length == 0 || (subArgs.length == 1 && (subArgs[0].equals("-h") || subArgs[0].equals("--help")));
+	}
+
+	private String[] getSubArgs(String[] arguments) {
+		return Arrays.copyOfRange(arguments, 1, arguments.length);
+	}
+	
+	private String mainUsage() {
+		return usage(MAIN_USAGE_TEMPLATE, null);
+	}
+	
+	private String schemaUsage(String error) {
+		return usage(SCHEMA_USAGE_TEMPLATE, error);
+	}
+	
+	private String serverUsage(String message) {
+		return usage(SERVER_USAGE_TEMPLATE, message);
+	}
+
+	private String usage(String template, String error) {
+		final StringBuilder builder = new StringBuilder();
+		if (error != null) {
+			builder.append("Error: ").append(error).append("\n\n");
+		}
+		return builder.append(template.replace("{app}", configuration.getExecutableName())).toString();
+	}
 }

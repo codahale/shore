@@ -37,7 +37,7 @@ public class IntegrationTest {
 			@Override
 			public void run() {
 				try {
-					Shore.run(config, "-p", Integer.toString(port), "-f", "src/test/resources/hsql-memory.properties");
+					Shore.run(config, "server", "-p", Integer.toString(port), "-c", "src/test/resources/hsql-memory.properties");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
