@@ -36,7 +36,7 @@
 		</license>
 	</licenses>
 	<properties>
-        <jersey.version>1.0.3</jersey.version>
+        <jersey.version>1.1.0-ea</jersey.version>
     </properties>
     <dependencies>
 		<dependency>
