@@ -72,6 +72,7 @@ public class ServerCommand implements Runnable {
 		server.addHandler(buildContext(buildServletHolder()));
 		server.setSendServerVersion(false);
 		server.setGracefulShutdown(GRACEFUL_SHUTDOWN_PERIOD);
+		server.setStopAtShutdown(true);
 		try {
 			server.start();
 			server.join();
