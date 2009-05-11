@@ -189,13 +189,13 @@ public class HibernateModuleTest {
 			final RecordingBinder binder = new RecordingBinder(Stage.PRODUCTION);
 			module.configure(binder);
 			for (Element element : binder.getElements()) {
-				if (element instanceof InstanceBindingImpl) {
+				if (element instanceof InstanceBindingImpl<?>) {
 					final InstanceBindingImpl<?> binding = (InstanceBindingImpl<?>) element;
 					bindings.put(binding.getKey(), binding.getInstance());
-				} else if (element instanceof ProviderInstanceBindingImpl) {
+				} else if (element instanceof ProviderInstanceBindingImpl<?>) {
 					final ProviderInstanceBindingImpl<?> binding = (ProviderInstanceBindingImpl<?>) element;
 					bindings.put(binding.getKey(), binding.getProviderInstance());
-				} else if (element instanceof UntargettedBindingImpl) {
+				} else if (element instanceof UntargettedBindingImpl<?>) {
 					final UntargettedBindingImpl<?> binding = (UntargettedBindingImpl<?>) element;
 					bindings.put(binding.getKey(), binding.getScoping());
 				}
