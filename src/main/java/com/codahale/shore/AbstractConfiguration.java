@@ -11,7 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.ext.Provider;
 
 import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.bio.SocketConnector;
+import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.servlet.FilterHolder;
 
 import com.google.common.collect.ImmutableList;
@@ -107,13 +107,13 @@ public abstract class AbstractConfiguration {
 	/**
 	 * Returns a new {@link Connector} to be used by Jetty to response to HTTP
 	 * reqests. Override this method to return a specifically-configured
-	 * {@link Connector}. By default, a stock {@link SocketConnector} is
+	 * {@link Connector}. By default, a stock {@link SelectChannelConnector} is
 	 * returned.
 	 * 
-	 * @return a {@link SocketConnector}
+	 * @return a {@link SelectChannelConnector}
 	 */
 	public Connector getConnector() {
-		return new SocketConnector();
+		return new SelectChannelConnector();
 	}
 	
 	/**

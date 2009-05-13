@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import org.mortbay.jetty.bio.SocketConnector;
+import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.servlet.GzipFilter;
 import org.mortbay.servlet.ThrottlingFilter;
@@ -96,7 +96,7 @@ public class AbstractConfigurationTest {
 		
 		@Test
 		public void itHasAConnector() throws Exception {
-			assertThat(config.getConnector(), is(SocketConnector.class));
+			assertThat(config.getConnector(), is(SelectChannelConnector.class));
 		}
 		
 		@Test
