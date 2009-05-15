@@ -21,7 +21,6 @@ public class CommandFactoryTest {
 	private static final AbstractConfiguration config = new AbstractConfiguration() {
 		@Override
 		protected void configure() {
-			// TODO Auto-generated method stub
 			
 		}
 

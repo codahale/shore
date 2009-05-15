@@ -250,7 +250,6 @@ public class RecordingBinder implements Binder, PrivateBinder {
 
 	@Override
 	public void bindListener(Matcher<? super TypeLiteral<?>> arg0, Listener arg1) {
-		// TODO Auto-generated method stub
 		
 	}
 
