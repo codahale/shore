@@ -50,7 +50,7 @@ public class RecordingBinder implements Binder, PrivateBinder {
 
 	/** Creates a recording binder that's backed by {@code prototype}. */
 	private RecordingBinder(RecordingBinder prototype, Object source, SourceProvider sourceProvider) {
-		checkArgument(source == null ^ sourceProvider == null);
+		checkArgument((source == null) ^ (sourceProvider == null));
 
 		this.stage = prototype.stage;
 		this.modules = prototype.modules;
