@@ -97,8 +97,8 @@ public class HibernateModuleTest {
 		}
 		
 		@Test
-		public void itKeepsUsageStatistics() throws Exception {
-			assertThat(getProperty("hibernate.generate_statistics"), is("true"));
+		public void itDoesNotKeepUsageStatistics() throws Exception {
+			assertThat(getProperty("hibernate.generate_statistics"), is("false"));
 		}
 		
 		@Test
@@ -116,9 +116,9 @@ public class HibernateModuleTest {
 		
 		@Test
 		public void itAllowsDefaultSettingsToBeOverridden() throws Exception {
-			properties.setProperty("hibernate.generate_statistics", "false");
+			properties.setProperty("hibernate.generate_statistics", "true");
 			
-			assertThat(getProperty("hibernate.generate_statistics"), is("false"));
+			assertThat(getProperty("hibernate.generate_statistics"), is("true"));
 		}
 		
 		@Test

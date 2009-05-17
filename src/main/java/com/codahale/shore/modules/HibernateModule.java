@@ -72,8 +72,10 @@ public class HibernateModule extends AbstractModule {
 		configuration.setProperty("hibernate.format_sql", "true");
 		configuration.setProperty("hibernate.use_sql_comments", "true");
 		
-		// Required for performance logging.
-		configuration.setProperty("hibernate.generate_statistics", "true");
+		// Don't enable statistics unless we really need to.
+		// See http://tech.puredanger.com/2009/05/13/hibernate-concurrency-bugs/
+		// for an explanation of the drawbacks to Hibernate's StatisticsImpl.
+		configuration.setProperty("hibernate.generate_statistics", "false");
 		
 		// C3P0's the best connection pool, and this is how to keep most
 		// database connections from timing out after long periods of inactivity.
