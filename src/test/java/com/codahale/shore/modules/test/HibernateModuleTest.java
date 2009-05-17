@@ -40,14 +40,13 @@ import com.wideplay.warp.persist.PersistenceService;
 public class HibernateModuleTest {
 	private static abstract class Context {
 		protected Logger logger;
+		protected Properties properties;
 		
 		public void setup() throws Exception {
 			Logger.getLogger("org.hibernate").setLevel(Level.OFF);
 			this.logger = mock(Logger.class);
-		}
-		
-		protected HibernateModule createModule() throws Exception {
-			final Properties properties = new Properties();
+			
+			this.properties = new Properties();
 			properties.setProperty(Environment.DIALECT, "org.hibernate.dialect.HSQLDialect");
 			properties.setProperty(Environment.DRIVER, "org.hsqldb.jdbcDriver");
 			properties.setProperty(Environment.USER, "sa");
@@ -56,7 +55,9 @@ public class HibernateModuleTest {
 			properties.setProperty(Environment.POOL_SIZE, "1");
 			properties.setProperty(Environment.SHOW_SQL, "true");
 			properties.setProperty(Environment.HBM2DDL_AUTO, "create-drop");
-			
+		}
+		
+		protected HibernateModule createModule() throws Exception {
 			return new HibernateModule(
 				logger,
 				properties,
@@ -111,6 +112,20 @@ public class HibernateModuleTest {
 			assertThat(getProperty("hibernate.c3p0.timeout"), is("10800"));
 			assertThat(getProperty("hibernate.c3p0.preferredTestQuery"), is("SELECT 1;"));
 			assertThat(getProperty("hibernate.c3p0.maxConnectionAge"), is("14400"));
+		}
+		
+		@Test
+		public void itAllowsDefaultSettingsToBeOverridden() throws Exception {
+			properties.setProperty("hibernate.generate_statistics", "false");
+			
+			assertThat(getProperty("hibernate.generate_statistics"), is("false"));
+		}
+		
+		@Test
+		public void itDoesNotAllowRequiredSettingsToBeOverridden() throws Exception {
+			properties.setProperty("hibernate.current_session_context_class", "thread");
+			
+			assertThat(getProperty("hibernate.current_session_context_class"), is("managed"));
 		}
 		
 		@Test

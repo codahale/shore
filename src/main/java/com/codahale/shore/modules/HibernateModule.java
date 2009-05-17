@@ -40,6 +40,7 @@ public class HibernateModule extends AbstractModule {
 	public HibernateModule(Logger logger, Properties properties, Collection<String> entityPackages) {
 		this.logger = checkNotNull(logger);
 		this.configuration = new AnnotationConfiguration();
+		configureDefaultProperties(configuration);
 		configuration.addProperties(checkNotNull(properties));
 		configureRequiredProperties(configuration);
 		addAnnotatedEntities(configuration, checkNotNull(entityPackages));
@@ -60,11 +61,13 @@ public class HibernateModule extends AbstractModule {
 		Collections.sort(entityClasses);
 		logger.info("Configured entities: " + entityClasses);
 	}
-
-	private void configureRequiredProperties(Configuration configuration) {
+	
+	private void configureRequiredProperties(Configuration configuration2) {
 		// Required for WarpPersist's SessionFilter to work.
 		configuration.setProperty("hibernate.current_session_context_class", "managed");
-		
+	}
+
+	private void configureDefaultProperties(Configuration configuration) {
 		// Handy for actually seeing what's going on.
 		configuration.setProperty("hibernate.format_sql", "true");
 		configuration.setProperty("hibernate.use_sql_comments", "true");
