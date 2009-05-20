@@ -3,6 +3,7 @@ package com.codahale.shore.test;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Map.Entry;
@@ -11,7 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
+import org.mortbay.jetty.Server;
 import org.mortbay.jetty.nio.SelectChannelConnector;
+import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.servlet.GzipFilter;
 import org.mortbay.servlet.ThrottlingFilter;
@@ -53,6 +56,16 @@ public class AbstractConfigurationTest {
 		
 		public void doConfig() {
 			configure();
+		}
+		
+		@Override
+		protected void configureContext(Context context) {
+			context.setAllowNullPathInfo(true);
+		}
+		
+		@Override
+		protected void configureServer(Server server) {
+			server.setGracefulShutdown(20);
 		}
 	}
 	
@@ -113,6 +126,24 @@ public class AbstractConfigurationTest {
 			
 			final List<String> expectedUrlPatterns = ImmutableList.of("/*", "/hard-to-serve/*", "/welcome");
 			assertThat(patterns, is(expectedUrlPatterns));
+		}
+		
+		@Test
+		public void itConfiguresAJettyServer() throws Exception {
+			final Server server = mock(Server.class);
+			
+			config.configureServer(server);
+			
+			verify(server).setGracefulShutdown(20);
+		}
+		
+		@Test
+		public void itConfiguresAJettyContext() throws Exception {
+			final Context context = mock(Context.class);
+			
+			config.configureContext(context);
+			
+			verify(context).setAllowNullPathInfo(true);
 		}
 	}
 }

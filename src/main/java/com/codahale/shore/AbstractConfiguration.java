@@ -11,7 +11,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.ext.Provider;
 
 import org.mortbay.jetty.Connector;
+import org.mortbay.jetty.Server;
 import org.mortbay.jetty.nio.SelectChannelConnector;
+import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.FilterHolder;
 
 import com.google.common.collect.ImmutableList;
@@ -166,4 +168,24 @@ public abstract class AbstractConfiguration {
 	 * @return the application binary's name
 	 */
 	public abstract String getExecutableName();
+	
+	/**
+	 * Configures the Jetty {@link Server} before it is started. Override this
+	 * to customize the server behavior.
+	 * 
+	 * @param server
+	 */
+	protected void configureServer(Server server) {
+		// no customizations needed
+	}
+	
+	/**
+	 * Configures the Jetty {@link Context} before it is started. Override this
+	 * to customize the context behavior.
+	 * 
+	 * @param context
+	 */
+	protected void configureContext(Context context) {
+		// no customizations needed
+	}
 }
