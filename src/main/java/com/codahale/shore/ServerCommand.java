@@ -73,6 +73,7 @@ public class ServerCommand implements Runnable {
 		server.setSendServerVersion(false);
 		server.setGracefulShutdown(GRACEFUL_SHUTDOWN_PERIOD);
 		server.setStopAtShutdown(true);
+		configuration.configureServer(server);
 		try {
 			server.start();
 			server.join();
@@ -95,6 +96,7 @@ public class ServerCommand implements Runnable {
 			root.addFilter(filter.getKey(), filter.getValue(), 0);
 		}
 		root.addFilter(SessionFilter.class, "/*", 0);
+		configuration.configureContext(root);
 		return root;
 	}
 
