@@ -37,7 +37,7 @@
 	</licenses>
 	<properties>
 		<jersey.version>1.1.0-ea</jersey.version>
-		<jetty.version>6.1.17</jetty.version>
+		<jetty.version>6.1.18</jetty.version>
 	</properties>
 	<dependencies>
 		<dependency>
