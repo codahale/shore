@@ -101,7 +101,7 @@ public class CommandFactory {
 	
 
 	private boolean isCommand(String[] arguments, String command) {
-		return arguments.length > 0 && arguments[0].equals(command);
+		return (arguments.length > 0) && arguments[0].equals(command);
 	}
 
 	private Runnable buildServerCommand(String[] arguments) {
@@ -147,7 +147,7 @@ public class CommandFactory {
 	}
 
 	private boolean isHelpCommand(final String[] subArgs) {
-		return subArgs.length == 0 || (subArgs.length == 1 && (subArgs[0].equals("-h") || subArgs[0].equals("--help")));
+		return (subArgs.length == 0) || ((subArgs.length == 1) && (subArgs[0].equals("-h") || subArgs[0].equals("--help")));
 	}
 
 	private String[] getSubArgs(String[] arguments) {
