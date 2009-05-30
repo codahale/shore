@@ -80,8 +80,12 @@ public class CommandFactory {
 			final CommandLine cmdLine = parser.parse(options, subArgs);
 			
 			final Properties properties = new Properties();
-			properties.load(new FileReader(cmdLine.getOptionValue("c")));
-			
+			final FileReader reader = new FileReader(cmdLine.getOptionValue("c"));
+			try {
+				properties.load(reader);
+			} finally {
+				reader.close();
+			}
 			final boolean migration = cmdLine.hasOption("migration");
 			
 			return new SchemaCommand(configuration, properties, migration, System.out);
@@ -122,8 +126,12 @@ public class CommandFactory {
 			final CommandLine cmdLine = parser.parse(options, subArgs);
 			
 			final Properties properties = new Properties();
-			properties.load(new FileReader(cmdLine.getOptionValue("c")));
-			
+			final FileReader reader = new FileReader(cmdLine.getOptionValue("c"));
+			try {
+				properties.load(reader);
+			} finally {
+				reader.close();
+			}
 			final int port = Integer.valueOf(cmdLine.getOptionValue("p"));
 			
 			return new ServerCommand(configuration, port, properties);
