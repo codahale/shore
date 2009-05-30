@@ -5,10 +5,12 @@ import static com.google.common.base.Preconditions.*;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.hibernate.HibernateException;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Settings;
 import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
@@ -82,21 +84,25 @@ public class SchemaCommand implements Runnable {
 			
 			
 			if (migration) {
-				final Connection connection = settings.getConnectionProvider().getConnection();
 				try {
-					final DatabaseMetadata metadata = new DatabaseMetadata(connection, settings.getDialect());
-					
-					writer.println("/* migration script */");
-					printSQL(writer, hibernateConfig.generateSchemaUpdateScript(settings.getDialect(), metadata));
-				} finally {
-					connection.close();
+					final Connection connection = settings.getConnectionProvider().getConnection();
+					try {
+						final DatabaseMetadata metadata = new DatabaseMetadata(connection, settings.getDialect());
+						
+						writer.println("/* migration script */");
+						printSQL(writer, hibernateConfig.generateSchemaUpdateScript(settings.getDialect(), metadata));
+					} finally {
+						connection.close();
+					}
+				} catch (SQLException e) {
+					throw new HibernateException(e);
 				}
 			} else {
 				writer.println("/* full drop-and-create script */");
 				printSQL(writer, hibernateConfig.generateDropSchemaScript(settings.getDialect()));
 				printSQL(writer, hibernateConfig.generateSchemaCreationScript(settings.getDialect()));
 			}
-		} catch (Exception e) {
+		} catch (HibernateException e) {
 			writer.println("Error: unable to connect to the database.\n");
 			e.printStackTrace(writer);
 		}
