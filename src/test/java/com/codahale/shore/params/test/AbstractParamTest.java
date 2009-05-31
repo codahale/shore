@@ -21,7 +21,7 @@ public class AbstractParamTest {
 		}
 
 		@Override
-		protected Integer parse(String param) throws Throwable {
+		protected Integer parse(String param) throws Exception {
 			return Integer.valueOf(param);
 		}
 	}

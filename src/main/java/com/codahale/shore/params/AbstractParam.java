@@ -24,7 +24,7 @@ public abstract class AbstractParam<V> {
 	public AbstractParam(String param) throws WebApplicationException {
 		try {
 			this.value = parse(param);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			throw new WebApplicationException(onError(param, e));
 		}
 	}
@@ -48,9 +48,9 @@ public abstract class AbstractParam<V> {
 	 * 
 	 * @param param an external input from a path, query, form, or other parameter
 	 * @return {@code param} as an instance of type {@code V}
-	 * @throws Throwable if {@code param} is unparsable
+	 * @throws Exception if {@code param} is unparsable
 	 */
-	protected abstract V parse(String param) throws Throwable;
+	protected abstract V parse(String param) throws Exception;
 	
 	/**
 	 * Returns a 400 Bad Request response describing the invalid parameter.
