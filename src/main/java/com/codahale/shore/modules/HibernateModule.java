@@ -62,7 +62,7 @@ public class HibernateModule extends AbstractModule {
 		logger.info("Configured entities: " + entityClasses);
 	}
 	
-	private void configureRequiredProperties(Configuration configuration2) {
+	private void configureRequiredProperties(Configuration configuration) {
 		// Required for WarpPersist's SessionFilter to work.
 		configuration.setProperty("hibernate.current_session_context_class", "managed");
 	}
