@@ -5,8 +5,7 @@ import static com.google.common.base.Preconditions.*;
 public final class Shore {
 	private Shore() {} // nope
 	
-	public static void run(AbstractConfiguration configuration, String... arguments)
-			throws Exception {
+	public static void run(AbstractConfiguration configuration, String... arguments) {
 		new CommandFactory(checkNotNull(configuration)).getCommand(checkNotNull(arguments)).run();
 	}
 }
