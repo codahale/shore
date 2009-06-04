@@ -44,6 +44,10 @@
 			<id>org.guiceyfruit</id>
 			<url>http://guiceyfruit.googlecode.com/svn/repo/releases/</url>
 		</repository>
+		<repository>
+			<id>com.googlecode.warp-persist-neodatis</id>
+			<url>http://warp-persist-neodatis.googlecode.com/svn/trunk/repo/</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
