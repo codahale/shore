@@ -47,6 +47,12 @@
 		<repository>
 			<id>com.googlecode.warp-persist-neodatis</id>
 			<url>http://warp-persist-neodatis.googlecode.com/svn/trunk/repo/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	<dependencies>
