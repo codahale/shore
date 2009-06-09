@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
 
 import com.google.common.collect.Lists;
 import com.google.inject.AbstractModule;
@@ -69,19 +70,19 @@ public class HibernateModule extends AbstractModule {
 
 	private void configureDefaultProperties(Configuration configuration) {
 		// Handy for actually seeing what's going on.
-		configuration.setProperty("hibernate.format_sql", "true");
-		configuration.setProperty("hibernate.use_sql_comments", "true");
+		configuration.setProperty(Environment.FORMAT_SQL, "true");
+		configuration.setProperty(Environment.USE_SQL_COMMENTS, "true");
 		
 		// Don't enable statistics unless we really need to.
 		// See http://tech.puredanger.com/2009/05/13/hibernate-concurrency-bugs/
 		// for an explanation of the drawbacks to Hibernate's StatisticsImpl.
-		configuration.setProperty("hibernate.generate_statistics", "false");
+		configuration.setProperty(Environment.GENERATE_STATISTICS, "false");
 		
 		// C3P0's the best connection pool, and this is how to keep most
 		// database connections from timing out after long periods of inactivity.
-		configuration.setProperty("hibernate.connection.provider_class", "org.hibernate.connection.C3P0ConnectionProvider");
-		configuration.setProperty("hibernate.c3p0.idle_test_period", "3600");
-		configuration.setProperty("hibernate.c3p0.timeout", "10800");
+		configuration.setProperty(Environment.CONNECTION_PROVIDER, "org.hibernate.connection.C3P0ConnectionProvider");
+		configuration.setProperty(Environment.C3P0_IDLE_TEST_PERIOD, "3600");
+		configuration.setProperty(Environment.C3P0_TIMEOUT, "10800");
 		configuration.setProperty("hibernate.c3p0.preferredTestQuery", "SELECT 1;");
 		configuration.setProperty("hibernate.c3p0.maxConnectionAge", "14400");
 	}
