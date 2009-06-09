@@ -57,7 +57,7 @@ public abstract class AbstractConfiguration {
 	 * 
 	 * @param entityPackage a package containing Hibernate entity classes
 	 */
-	protected void addEntityPackage(String entityPackage) {
+	protected final void addEntityPackage(String entityPackage) {
 		entityPackages.add(checkNotNull(entityPackage));
 	}
 	
@@ -66,7 +66,7 @@ public abstract class AbstractConfiguration {
 	 * 
 	 * @param module a Guice module
 	 */
-	protected void addModule(Module module) {
+	protected final void addModule(Module module) {
 		modules.add(checkNotNull(module));
 	};
 	
@@ -76,7 +76,7 @@ public abstract class AbstractConfiguration {
 	 * 
 	 * @param resourcePackage a package containing Jersey classes
 	 */
-	protected void addResourcePackage(String resourcePackage) {
+	protected final void addResourcePackage(String resourcePackage) {
 		resourcePackages.add(checkNotNull(resourcePackage));
 	}
 	
@@ -86,7 +86,7 @@ public abstract class AbstractConfiguration {
 	 * @param filterClass the filter's class
 	 * @param urlPattern the URL pattern for requests to filter
 	 */
-	protected void addServletFilter(Class<? extends Filter> filterClass, String urlPattern) {
+	protected final void addServletFilter(Class<? extends Filter> filterClass, String urlPattern) {
 		final FilterHolder holder = new FilterHolder(checkNotNull(filterClass));
 		servletFilters.put(holder, checkNotNull(urlPattern));
 	};
@@ -97,7 +97,7 @@ public abstract class AbstractConfiguration {
 	 * @param holder a configred filter holder
 	 * @param urlPattern the URL pattern for requests to filter
 	 */
-	protected void addServletFilter(FilterHolder holder, String urlPattern) {
+	protected final void addServletFilter(FilterHolder holder, String urlPattern) {
 		servletFilters.put(checkNotNull(holder), checkNotNull(urlPattern));
 	}
 	
@@ -121,35 +121,35 @@ public abstract class AbstractConfiguration {
 	/**
 	 * Returns a list of Hibernate entity packages.
 	 */
-	public List<String> getEntityPackages() {
+	public final List<String> getEntityPackages() {
 		return ImmutableList.copyOf(entityPackages);
 	}
 	
 	/**
 	 * Returns a list of Guice modules.
 	 */
-	public List<Module> getModules() {
+	public final List<Module> getModules() {
 		return ImmutableList.copyOf(modules);
 	}
 	
 	/**
 	 * Returns a list of Jersey resource/provider packages.
 	 */
-	public List<String> getResourcePackages() {
+	public final List<String> getResourcePackages() {
 		return ImmutableList.copyOf(resourcePackages);
 	}
 	
 	/**
 	 * Returns an ordered map of servlet filter holders and their URL patterns.
 	 */
-	public Map<FilterHolder, String> getServletFilters() {
+	public final Map<FilterHolder, String> getServletFilters() {
 		return ImmutableMap.copyOf(servletFilters);
 	}
 	
 	/**
 	 * Returns the Guice stage.
 	 */
-	public Stage getStage() {
+	public final Stage getStage() {
 		return stage;
 	}
 	
