@@ -5,6 +5,8 @@ import static com.google.common.base.Preconditions.*;
 import java.io.Serializable;
 import java.util.List;
 
+import net.jcip.annotations.Immutable;
+
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -20,6 +22,7 @@ import com.google.inject.Provider;
  * @param <E>
  *            the class which this DAO manages
  */
+@Immutable
 public class AbstractDAO<E> {
 	private final Provider<Session> provider;
 	private final Class<E> entityClass;

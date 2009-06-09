@@ -10,6 +10,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.jcip.annotations.Immutable;
+
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Settings;
@@ -24,6 +26,7 @@ import com.codahale.shore.modules.HibernateModule;
  * @author coda
  *
  */
+@Immutable
 public class SchemaCommand implements Runnable {
 	private final AbstractConfiguration configuration;
 	private final Properties properties;

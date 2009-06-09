@@ -6,6 +6,8 @@ import java.util.Properties;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
+import net.jcip.annotations.Immutable;
+
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.Context;
@@ -29,6 +31,7 @@ import com.wideplay.warp.persist.SessionFilter;
  * @author coda
  *
  */
+@Immutable
 public class ServerCommand implements Runnable {
 	private static final int GRACEFUL_SHUTDOWN_PERIOD = 5000; //ms
 	private static final Logger LOGGER = Logger.getLogger(ServerCommand.class.getCanonicalName());

@@ -1,6 +1,7 @@
 package com.codahale.shore;
 
 import static com.google.common.base.Preconditions.*;
+import net.jcip.annotations.Immutable;
 
 /**
  * The entry point for Shore applications. Run this using a class in your
@@ -16,6 +17,7 @@ import static com.google.common.base.Preconditions.*;
  * @author coda
  *
  */
+@Immutable
 public final class Shore {
 	private Shore() {} // nope
 	

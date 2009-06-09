@@ -10,6 +10,8 @@ import javax.servlet.Filter;
 import javax.ws.rs.Path;
 import javax.ws.rs.ext.Provider;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.nio.SelectChannelConnector;
@@ -45,6 +47,7 @@ import com.google.inject.Stage;
  * @author coda
  *
  */
+@NotThreadSafe
 public abstract class AbstractConfiguration {
 	private final List<String> entityPackages = Lists.newLinkedList();
 	private final List<String> resourcePackages = Lists.newLinkedList();

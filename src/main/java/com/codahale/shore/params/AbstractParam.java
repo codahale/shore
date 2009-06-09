@@ -4,6 +4,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import net.jcip.annotations.Immutable;
+
 /**
  * An abstract base class for parameter classes.
  * 
@@ -11,6 +13,7 @@ import javax.ws.rs.core.Response.Status;
  *
  * @param <V> the type of value returned by descendent classes
  */
+@Immutable
 public abstract class AbstractParam<V> {
 	private final V value;
 	

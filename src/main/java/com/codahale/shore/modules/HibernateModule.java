@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 
 import javax.persistence.Entity;
 
+import net.jcip.annotations.Immutable;
+
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
@@ -29,6 +31,7 @@ import com.wideplay.warp.persist.UnitOfWork;
  * 
  * @author coda
  */
+@Immutable
 public class HibernateModule extends AbstractModule {
 	private final AnnotationConfiguration configuration;
 	private final Logger logger;

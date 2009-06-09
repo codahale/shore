@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Properties;
 
+import net.jcip.annotations.Immutable;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.Option;
@@ -20,6 +22,7 @@ import org.apache.commons.cli.ParseException;
  * @author coda
  *
  */
+@Immutable
 public class CommandFactory {
 	private final static String MAIN_USAGE_TEMPLATE =
 				"usage: {app} <subcommand> [options]\n" +

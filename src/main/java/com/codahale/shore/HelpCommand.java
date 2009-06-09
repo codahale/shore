@@ -5,12 +5,15 @@ import static com.google.common.base.Preconditions.*;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+import net.jcip.annotations.Immutable;
+
 /**
  * Prints usage information for an application to an output stream.
  * 
  * @author coda
  * 
  */
+@Immutable
 public class HelpCommand implements Runnable {
 	private final String text;
 	private final OutputStream outputStream;
