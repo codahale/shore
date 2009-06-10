@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import net.jcip.annotations.Immutable;
 
 import org.mortbay.jetty.Connector;
+import org.mortbay.jetty.Handler;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.FilterHolder;
@@ -96,9 +97,9 @@ public class ServerCommand implements Runnable {
 		root.setContextPath("/");
 		root.addServlet(servletHolder, "/*");
 		for (Entry<FilterHolder, String> filter : configuration.getServletFilters().entrySet()) {
-			root.addFilter(filter.getKey(), filter.getValue(), 0);
+			root.addFilter(filter.getKey(), filter.getValue(), Handler.DEFAULT);
 		}
-		root.addFilter(SessionFilter.class, "/*", 0);
+		root.addFilter(SessionFilter.class, "/*", Handler.DEFAULT);
 		configuration.configureContext(root);
 		return root;
 	}
