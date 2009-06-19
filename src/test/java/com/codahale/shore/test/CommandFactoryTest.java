@@ -276,6 +276,7 @@ public class CommandFactoryTest {
 			final ServerCommand cmd = (ServerCommand) runnable;
 			assertThat(cmd.getConfiguration(), is(sameInstance(config)));
 			assertThat(cmd.getPort(), is(8080));
+			assertThat(cmd.getGracefulShutdown(), is(true));
 			assertThat(cmd.getProperties().getProperty(Environment.URL), is("jdbc:hsqldb:mem:ShoreTest"));
 		}
 	}

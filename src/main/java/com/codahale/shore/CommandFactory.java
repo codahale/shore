@@ -124,6 +124,8 @@ public class CommandFactory {
 		portOption.setRequired(true);
 		options.addOption(portOption);
 		
+		options.addOption(null, "graceless", false, null);
+		
 		try {
 			
 			final CommandLine cmdLine = parser.parse(options, subArgs);
@@ -137,7 +139,7 @@ public class CommandFactory {
 			}
 			final int port = Integer.valueOf(cmdLine.getOptionValue("p"));
 			
-			return new ServerCommand(configuration, port, properties);
+			return new ServerCommand(configuration, port, !cmdLine.hasOption("graceless"), properties);
 		} catch (ParseException e) {
 			return new HelpCommand(serverUsage(e.getMessage()), System.out);
 		} catch (FileNotFoundException e) {

@@ -28,7 +28,7 @@ public class ServerCommandTest {
 			this.properties = new Properties();
 			
 			
-			this.cmd = new ServerCommand(config, 8080, properties);
+			this.cmd = new ServerCommand(config, 8080, false, properties);
 		}
 		
 		@Test
@@ -44,6 +44,11 @@ public class ServerCommandTest {
 		@Test
 		public void itHasProperties() throws Exception {
 			assertThat(cmd.getProperties(), is(sameInstance(properties)));
+		}
+		
+		@Test
+		public void itHasAGracefulShutdown() throws Exception {
+			assertThat(cmd.getGracefulShutdown(), is(false));
 		}
 	}
 }
