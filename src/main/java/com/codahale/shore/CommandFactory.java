@@ -28,18 +28,18 @@ public class CommandFactory {
 				"usage: {app} <subcommand> [options]\n" +
 				"\n" +
 				"Available subcommands:\n" +
-				"   server\t\tRun {app} as an HTTP server.\n" +
-				"   schema\tGenerate a database schema for {app}.\n" +
+				"   server    Run {app} as an HTTP server.\n" +
+				"   schema    Generate a database schema for {app}.\n" +
 				"\n" +
 				"Type '{app} <subcommand> --help' for help on a specific subcommand.";
 	private final static String SERVER_USAGE_TEMPLATE =
 				"usage: {app} server -c <file> -p <port>\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   -p, --port=PORT\tWhich port to bind to";
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -p, --port=PORT      Which port to bind to";
 	private final static String SCHEMA_USAGE_TEMPLATE =
 		"usage: {app} schema -c <file> [--migration]\n" +
-		"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-		"   --migration\t\tGenerate a migration script";
+		"   -c, --config=FILE    Which Hibernate config file to use\n" +
+		"   --migration          Generate a migration script";
 	private final AbstractConfiguration configuration;
 	private final GnuParser parser;
 	

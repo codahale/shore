@@ -46,8 +46,8 @@ public class CommandFactoryTest {
 				"usage: shoretest <subcommand> [options]\n" +
 				"\n" +
 				"Available subcommands:\n" +
-				"   server\t\tRun shoretest as an HTTP server.\n" +
-				"   schema\tGenerate a database schema for shoretest.\n" +
+				"   server    Run shoretest as an HTTP server.\n" +
+				"   schema    Generate a database schema for shoretest.\n" +
 				"\n" +
 				"Type 'shoretest <subcommand> --help' for help on a specific subcommand."
 			));
@@ -66,8 +66,8 @@ public class CommandFactoryTest {
 				"usage: shoretest <subcommand> [options]\n" +
 				"\n" +
 				"Available subcommands:\n" +
-				"   server\t\tRun shoretest as an HTTP server.\n" +
-				"   schema\tGenerate a database schema for shoretest.\n" +
+				"   server    Run shoretest as an HTTP server.\n" +
+				"   schema    Generate a database schema for shoretest.\n" +
 				"\n" +
 				"Type 'shoretest <subcommand> --help' for help on a specific subcommand."
 			));
@@ -86,8 +86,8 @@ public class CommandFactoryTest {
 				"usage: shoretest <subcommand> [options]\n" +
 				"\n" +
 				"Available subcommands:\n" +
-				"   server\t\tRun shoretest as an HTTP server.\n" +
-				"   schema\tGenerate a database schema for shoretest.\n" +
+				"   server    Run shoretest as an HTTP server.\n" +
+				"   schema    Generate a database schema for shoretest.\n" +
 				"\n" +
 				"Type 'shoretest <subcommand> --help' for help on a specific subcommand."
 			));
@@ -104,8 +104,8 @@ public class CommandFactoryTest {
 			assertThat(cmd.getOutputStream(), is(sameInstance((OutputStream) System.out)));
 			assertThat(cmd.getText(), is(
 				"usage: shoretest server -c <file> -p <port>\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   -p, --port=PORT\tWhich port to bind to"
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -p, --port=PORT      Which port to bind to"
 			));
 		}
 	}
@@ -120,8 +120,8 @@ public class CommandFactoryTest {
 			assertThat(cmd.getOutputStream(), is(sameInstance((OutputStream) System.out)));
 			assertThat(cmd.getText(), is(
 				"usage: shoretest server -c <file> -p <port>\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   -p, --port=PORT\tWhich port to bind to"
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -p, --port=PORT      Which port to bind to"
 			));
 			
 		}
@@ -137,8 +137,8 @@ public class CommandFactoryTest {
 			assertThat(cmd.getOutputStream(), is(sameInstance((OutputStream) System.out)));
 			assertThat(cmd.getText(), is(
 				"usage: shoretest server -c <file> -p <port>\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   -p, --port=PORT\tWhich port to bind to"
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -p, --port=PORT      Which port to bind to"
 			));
 			
 		}
@@ -156,8 +156,8 @@ public class CommandFactoryTest {
 				"Error: Missing required option: c\n" +
 				"\n" +
 				"usage: shoretest server -c <file> -p <port>\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   -p, --port=PORT\tWhich port to bind to"
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -p, --port=PORT      Which port to bind to"
 			));
 		}
 	}
@@ -174,8 +174,8 @@ public class CommandFactoryTest {
 				"Error: Missing required option: p\n" +
 				"\n" +
 				"usage: shoretest server -c <file> -p <port>\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   -p, --port=PORT\tWhich port to bind to"
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -p, --port=PORT      Which port to bind to"
 			));
 		}
 	}
@@ -192,8 +192,8 @@ public class CommandFactoryTest {
 				"Error: Config file does not exist\n" +
 				"\n" +
 				"usage: shoretest server -c <file> -p <port>\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   -p, --port=PORT\tWhich port to bind to"
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -p, --port=PORT      Which port to bind to"
 			));
 		}
 	}
@@ -210,8 +210,8 @@ public class CommandFactoryTest {
 				"Error: Unrecognized option: --ffffuuuuu\n" +
 				"\n" +
 				"usage: shoretest server -c <file> -p <port>\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   -p, --port=PORT\tWhich port to bind to"
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -p, --port=PORT      Which port to bind to"
 			));
 		}
 	}
@@ -228,8 +228,8 @@ public class CommandFactoryTest {
 				"Error: Invalid port number\n" +
 				"\n" +
 				"usage: shoretest server -c <file> -p <port>\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   -p, --port=PORT\tWhich port to bind to"
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -p, --port=PORT      Which port to bind to"
 			));
 		}
 	}
@@ -290,8 +290,8 @@ public class CommandFactoryTest {
 			assertThat(cmd.getOutputStream(), is(sameInstance((OutputStream) System.out)));
 			assertThat(cmd.getText(), is(
 				"usage: shoretest schema -c <file> [--migration]\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   --migration\t\tGenerate a migration script"
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   --migration          Generate a migration script"
 			));
 		}
 	}
@@ -306,8 +306,8 @@ public class CommandFactoryTest {
 			assertThat(cmd.getOutputStream(), is(sameInstance((OutputStream) System.out)));
 			assertThat(cmd.getText(), is(
 				"usage: shoretest schema -c <file> [--migration]\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   --migration\t\tGenerate a migration script"
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   --migration          Generate a migration script"
 			));
 		}
 	}
@@ -322,8 +322,8 @@ public class CommandFactoryTest {
 			assertThat(cmd.getOutputStream(), is(sameInstance((OutputStream) System.out)));
 			assertThat(cmd.getText(), is(
 				"usage: shoretest schema -c <file> [--migration]\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   --migration\t\tGenerate a migration script"
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   --migration          Generate a migration script"
 			));
 		}
 	}
@@ -340,8 +340,8 @@ public class CommandFactoryTest {
 				"Error: Config file does not exist\n" +
 				"\n" +
 				"usage: shoretest schema -c <file> [--migration]\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   --migration\t\tGenerate a migration script"
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   --migration          Generate a migration script"
 			));
 		}
 	}
@@ -358,8 +358,8 @@ public class CommandFactoryTest {
 				"Error: Unrecognized option: --ffffuuuuu\n" +
 				"\n" +
 				"usage: shoretest schema -c <file> [--migration]\n" +
-				"   -c, --config=FILE\tWhich Hibernate config file to use\n" +
-				"   --migration\t\tGenerate a migration script"
+				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   --migration          Generate a migration script"
 			));
 		}
 	}
