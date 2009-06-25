@@ -38,6 +38,8 @@
 	<properties>
 		<jersey.version>1.1.0-ea</jersey.version>
 		<jetty.version>6.1.18</jetty.version>
+		<hibernate.version>3.3.2.GA</hibernate.version>
+		<guice.version>2.0</guice.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -57,6 +59,10 @@
 		<repository>
 			<id>java.net</id>
 			<url>http://download.java.net/maven/2</url>
+		</repository>
+		<repository>
+			<id>jboss</id>
+			<url>http://repository.jboss.org/maven2</url>
 		</repository>
 	</repositories>
 	<dependencies>
@@ -123,43 +129,43 @@
 		<dependency>
 			<groupId>org.guiceyfruit</groupId>
 			<artifactId>guice-all</artifactId>
-			<version>2.0</version>
+			<version>${guice.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.guiceyfruit</groupId>
 			<artifactId>guice-servlet</artifactId>
-			<version>2.0</version>
+			<version>${guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.8.0.GA</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-jdk14</artifactId>
-			<version>1.5.6</version>
+			<version>1.5.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>3.3.1.GA</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
+			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
-			<version>3.3.1.GA</version>
+			<version>${hibernate.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>c3p0</groupId>
 					<artifactId>c3p0</artifactId>
 				</exclusion>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -175,16 +181,6 @@
 					<artifactId>slf4j-api</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.8.0.GA</version>
-		</dependency>
-		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.collections</groupId>
