@@ -35,6 +35,12 @@
 			<url>COPYING.txt</url>
 		</license>
 	</licenses>
+	<distributionManagement>
+		<repository>
+			<id>repo.codahale.com</id>
+			<url>scp://codahale.com/home/codahale/repo.codahale.com</url>
+		</repository>
+	</distributionManagement>
 	<properties>
 		<jersey.version>1.1.0-ea</jersey.version>
 		<jetty.version>6.1.18</jetty.version>
