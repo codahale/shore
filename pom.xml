@@ -70,6 +70,10 @@
 			<id>jboss</id>
 			<url>http://repository.jboss.org/maven2</url>
 		</repository>
+		<repository>
+			<id>repo.codahale.com</id>
+			<url>http://repo.codahale.com</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -202,6 +206,11 @@
 			<groupId>net.jcip</groupId>
 			<artifactId>jcip-annotations</artifactId>
 			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.codahale</groupId>
+			<artifactId>jdbc-perf-wrapper</artifactId>
+			<version>0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>
