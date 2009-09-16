@@ -11,11 +11,13 @@ import net.jcip.annotations.Immutable;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Handler;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.handler.RequestLogHandler;
 import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.servlet.ServletHolder;
 
 import com.codahale.shore.modules.HibernateModule;
+import com.codahale.shore.util.PerformanceRequestLog;
 import com.google.common.base.Functions;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
@@ -83,6 +85,7 @@ public class ServerCommand implements Runnable {
 		server.setSendServerVersion(false);
 		server.setGracefulShutdown(GRACEFUL_SHUTDOWN_PERIOD);
 		server.setStopAtShutdown(gracefulShutdown);
+		server.addHandler(buildRequestLog());
 		configuration.configureServer(server);
 		try {
 			server.start();
@@ -92,6 +95,12 @@ public class ServerCommand implements Runnable {
 		}
 	}
 	
+	private RequestLogHandler buildRequestLog() {
+		final RequestLogHandler handler = new RequestLogHandler();
+		handler.setRequestLog(new PerformanceRequestLog());
+		return handler;
+	}
+
 	private Connector buildConnector() {
 		final Connector connector = configuration.getConnector();
 		connector.setPort(port);

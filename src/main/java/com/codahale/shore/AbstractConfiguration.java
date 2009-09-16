@@ -53,6 +53,7 @@ public abstract class AbstractConfiguration {
 	private final List<String> resourcePackages = Lists.newLinkedList();
 	private final List<Module> modules = Lists.newLinkedList();
 	private final Map<FilterHolder, String> servletFilters = Maps.newLinkedHashMap();
+	private final List<String> ignoredPaths = Lists.newLinkedList();
 	private Stage stage = Stage.DEVELOPMENT;
 	
 	/**
@@ -128,6 +129,10 @@ public abstract class AbstractConfiguration {
 		return ImmutableList.copyOf(entityPackages);
 	}
 	
+	public List<String> getIgnoredPaths() {
+		return ignoredPaths;
+	}
+	
 	/**
 	 * Returns a list of Guice modules.
 	 */
@@ -154,6 +159,10 @@ public abstract class AbstractConfiguration {
 	 */
 	public final Stage getStage() {
 		return stage;
+	}
+	
+	public void doNotLogRequestsFor(String uriSpec) {
+		ignoredPaths.add(uriSpec);
 	}
 	
 	/**
