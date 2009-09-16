@@ -8,13 +8,13 @@ import java.util.logging.Logger;
 
 import net.jcip.annotations.Immutable;
 
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.Handler;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.handler.RequestLogHandler;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.FilterHolder;
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.RequestLogHandler;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.FilterMapping;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 import com.codahale.shore.modules.HibernateModule;
 import com.codahale.shore.util.PerformanceRequestLog;
@@ -81,11 +81,15 @@ public class ServerCommand implements Runnable {
 		final Server server = new Server();
 		configuration.configure();
 		server.addConnector(buildConnector());
-		server.addHandler(buildContext(buildServletHolder()));
+		server.setHandler(buildContext(buildServletHolder()));
 		server.setSendServerVersion(false);
 		server.setGracefulShutdown(GRACEFUL_SHUTDOWN_PERIOD);
 		server.setStopAtShutdown(gracefulShutdown);
-		server.addHandler(buildRequestLog());
+		
+		server.addBean(buildRequestLog());
+		
+		
+		
 		configuration.configureServer(server);
 		try {
 			server.start();
@@ -107,14 +111,14 @@ public class ServerCommand implements Runnable {
 		return connector;
 	}
 
-	private Context buildContext(ServletHolder servletHolder) {
-		final Context root = new Context();
+	private ServletContextHandler buildContext(ServletHolder servletHolder) {
+		final ServletContextHandler root = new ServletContextHandler();
 		root.setContextPath("/");
 		root.addServlet(servletHolder, "/*");
 		for (Entry<FilterHolder, String> filter : configuration.getServletFilters().entrySet()) {
-			root.addFilter(filter.getKey(), filter.getValue(), Handler.DEFAULT);
+			root.addFilter(filter.getKey(), filter.getValue(), FilterMapping.DEFAULT);
 		}
-		root.addFilter(SessionFilter.class, "/*", Handler.DEFAULT);
+		root.addFilter(SessionFilter.class, "/*", FilterMapping.DEFAULT);
 		configuration.configureContext(root);
 		return root;
 	}

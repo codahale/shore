@@ -28,7 +28,7 @@ public class IntegrationTest {
 	@BeforeClass
 	public static void setupThread() throws Exception {
 		Logger.getLogger("org.hibernate").setLevel(Level.OFF);
-		Logger.getLogger("org.mortbay").setLevel(Level.OFF);
+		Logger.getLogger("org.eclipse.jetty").setLevel(Level.OFF);
 		Logger.getLogger("com.sun.jersey").setLevel(Level.OFF);
 		Logger.getLogger("com.mchange").setLevel(Level.OFF);
 		Logger.getLogger("com.codahale").setLevel(Level.OFF);

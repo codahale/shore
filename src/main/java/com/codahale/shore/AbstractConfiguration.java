@@ -10,13 +10,13 @@ import javax.servlet.Filter;
 import javax.ws.rs.Path;
 import javax.ws.rs.ext.Provider;
 
-import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.nio.SelectChannelConnector;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.FilterHolder;
+import net.jcip.annotations.NotThreadSafe;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -197,7 +197,7 @@ public abstract class AbstractConfiguration {
 	 * 
 	 * @param context
 	 */
-	protected void configureContext(Context context) {
+	protected void configureContext(ServletContextHandler context) {
 		// no customizations needed
 	}
 }

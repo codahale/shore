@@ -6,18 +6,22 @@ import static org.mockito.Mockito.*;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
+import java.security.Principal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.jetty.http.HttpURI;
+import org.eclipse.jetty.server.AsyncContinuation;
+import org.eclipse.jetty.server.Authentication;
+import org.eclipse.jetty.server.NCSARequestLog;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
+import org.eclipse.jetty.server.UserIdentity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import org.mortbay.jetty.HttpURI;
-import org.mortbay.jetty.NCSARequestLog;
-import org.mortbay.jetty.Request;
-import org.mortbay.jetty.Response;
 
 import com.codahale.jdbc.Stopwatch;
 import com.codahale.shore.util.PerformanceRequestLog;
@@ -29,21 +33,38 @@ public class PerformanceRequestLogTest {
 		private Request request;
 		private Response response;
 		private ByteArrayOutputStream output;
+		private AsyncContinuation continuation;
+		private Authentication.User authentication;
+		private UserIdentity userIdentity;
+		private Principal principal;
 		
 		@Before
 		public void setup() throws Exception {
 			Stopwatch.getInstance().reset();
-			Logger.getLogger("org.mortbay.log").setLevel(Level.OFF);
+			Logger.getLogger("org.eclipse").setLevel(Level.OFF);
 			
 			this.output = new ByteArrayOutputStream();
+			
+			this.continuation = mock(AsyncContinuation.class);
+			when(continuation.isInitial()).thenReturn(true);
+			
+			this.principal = mock(Principal.class);
+			when(principal.getName()).thenReturn("30029");
+			
+			this.userIdentity = mock(UserIdentity.class);
+			when(userIdentity.getUserPrincipal()).thenReturn(principal);
+			
+			this.authentication = mock(Authentication.User.class);
+			when(authentication.getUserIdentity()).thenReturn(userIdentity);
 			
 			this.request = mock(Request.class);
 			when(request.getUri()).thenReturn(new HttpURI("/test/1"));
 			when(request.getMethod()).thenReturn("POST");
 			when(request.getRemoteAddr()).thenReturn("10.0.0.0");
-			when(request.getRemoteUser()).thenReturn("30029");
 			when(request.getTimeStamp()).thenReturn(1246073144000L); // 27/Jun/2009:03:25:44 +0000
 			when(request.getProtocol()).thenReturn("HTTP/1.1");
+			when(request.getAsyncContinuation()).thenReturn(continuation);
+			when(request.getAuthentication()).thenReturn(authentication);
 			
 			this.response = mock(Response.class);
 			when(response.getStatus()).thenReturn(200);

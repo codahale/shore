@@ -8,17 +8,17 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlets.GzipFilter;
+import org.eclipse.jetty.servlets.QoSFilter;
+import org.eclipse.jetty.servlets.WelcomeFilter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.nio.SelectChannelConnector;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.FilterHolder;
-import org.mortbay.servlet.GzipFilter;
-import org.mortbay.servlet.ThrottlingFilter;
-import org.mortbay.servlet.WelcomeFilter;
 
 import com.codahale.shore.AbstractConfiguration;
 import com.google.common.collect.ImmutableList;
@@ -50,7 +50,7 @@ public class AbstractConfigurationTest {
 			addModule(MOCK_MODULE);
 			setStage(Stage.PRODUCTION);
 			addServletFilter(GzipFilter.class, "/*");
-			addServletFilter(ThrottlingFilter.class, "/hard-to-serve/*");
+			addServletFilter(QoSFilter.class, "/hard-to-serve/*");
 			addServletFilter(new FilterHolder(WelcomeFilter.class), "/welcome");
 		}
 		
@@ -59,7 +59,7 @@ public class AbstractConfigurationTest {
 		}
 		
 		@Override
-		protected void configureContext(Context context) {
+		protected void configureContext(ServletContextHandler context) {
 			context.setAllowNullPathInfo(true);
 		}
 		
@@ -121,7 +121,7 @@ public class AbstractConfigurationTest {
 				patterns.add(entry.getValue());
 			}
 			
-			final List<String> expectedFilterClasses = ImmutableList.of("org.mortbay.servlet.GzipFilter", "org.mortbay.servlet.ThrottlingFilter", "org.mortbay.servlet.WelcomeFilter");
+			final List<String> expectedFilterClasses = ImmutableList.of("org.eclipse.jetty.servlets.GzipFilter", "org.eclipse.jetty.servlets.QoSFilter", "org.eclipse.jetty.servlets.WelcomeFilter");
 			assertThat(filters, is(expectedFilterClasses));
 			
 			final List<String> expectedUrlPatterns = ImmutableList.of("/*", "/hard-to-serve/*", "/welcome");
@@ -139,7 +139,7 @@ public class AbstractConfigurationTest {
 		
 		@Test
 		public void itConfiguresAJettyContext() throws Exception {
-			final Context context = mock(Context.class);
+			final ServletContextHandler context = mock(ServletContextHandler.class);
 			
 			config.configureContext(context);
 			

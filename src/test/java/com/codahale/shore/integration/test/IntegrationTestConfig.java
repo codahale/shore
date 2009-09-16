@@ -1,6 +1,6 @@
 package com.codahale.shore.integration.test;
 
-import org.mortbay.servlet.GzipFilter;
+import org.eclipse.jetty.servlets.GzipFilter;
 
 import com.codahale.shore.AbstractConfiguration;
 
