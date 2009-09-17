@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import net.jcip.annotations.Immutable;
 
 import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.NCSARequestLog;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.RequestLogHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -17,7 +18,6 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import com.codahale.shore.modules.HibernateModule;
-import com.codahale.shore.util.PerformanceRequestLog;
 import com.google.common.base.Functions;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
@@ -101,7 +101,7 @@ public class ServerCommand implements Runnable {
 	
 	private RequestLogHandler buildRequestLog() {
 		final RequestLogHandler handler = new RequestLogHandler();
-		handler.setRequestLog(new PerformanceRequestLog());
+		handler.setRequestLog(new NCSARequestLog());
 		return handler;
 	}
 
