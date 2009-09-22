@@ -11,6 +11,7 @@ import net.jcip.annotations.Immutable;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.NCSARequestLog;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.handler.RequestLogHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.FilterMapping;
@@ -81,13 +82,10 @@ public class ServerCommand implements Runnable {
 		final Server server = new Server();
 		configuration.configure();
 		server.addConnector(buildConnector());
-		server.setHandler(buildContext(buildServletHolder()));
+		server.setHandler(buildHandlers());
 		server.setSendServerVersion(false);
 		server.setGracefulShutdown(GRACEFUL_SHUTDOWN_PERIOD);
 		server.setStopAtShutdown(gracefulShutdown);
-		
-		server.addBean(buildRequestLog());
-		
 		
 		
 		configuration.configureServer(server);
@@ -99,9 +97,18 @@ public class ServerCommand implements Runnable {
 		}
 	}
 	
+	private HandlerCollection buildHandlers() {
+		final HandlerCollection handlers = new HandlerCollection();
+		handlers.addHandler(buildContext(buildServletHolder()));
+		handlers.addHandler(buildRequestLog());
+		return handlers;
+	}
+	
 	private RequestLogHandler buildRequestLog() {
 		final RequestLogHandler handler = new RequestLogHandler();
-		handler.setRequestLog(new NCSARequestLog());
+		final NCSARequestLog log = new NCSARequestLog();
+		configuration.configureRequestLog(log);
+		handler.setRequestLog(log);
 		return handler;
 	}
 
