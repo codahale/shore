@@ -43,7 +43,7 @@
 	</distributionManagement>
 	<properties>
 		<jersey.version>1.1.2-ea</jersey.version>
-		<jetty.version>7.0.0.RC6</jetty.version>
+		<jetty.version>7.0.0.v20091005</jetty.version>
 		<hibernate.version>3.3.2.GA</hibernate.version>
 		<guice.version>2.0</guice.version>
 	</properties>
