@@ -42,8 +42,8 @@
 		</repository>
 	</distributionManagement>
 	<properties>
-		<jersey.version>1.1.2-ea</jersey.version>
-		<jetty.version>7.0.0.v20091005</jetty.version>
+		<jersey.version>1.1.5-ea-v20091019</jersey.version>
+		<jetty.version>7.0.1.v20091125</jetty.version>
 		<hibernate.version>3.3.2.GA</hibernate.version>
 		<guice.version>2.0</guice.version>
 	</properties>
@@ -200,7 +200,7 @@
 		<dependency>
 			<groupId>com.google.collections</groupId>
 			<artifactId>google-collections</artifactId>
-			<version>1.0-rc2</version>
+			<version>1.0-rc5</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-cli</groupId>
