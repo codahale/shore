@@ -26,6 +26,7 @@ import com.google.common.collect.Iterables;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import com.wideplay.warp.persist.SessionFilter;
 
@@ -132,7 +133,7 @@ public class ServerCommand implements Runnable {
 
 	private ServletHolder buildServletHolder() {
 		final ServletHolder servletHolder = new ServletHolder(new GuiceContainer(buildInjector()));
-		servletHolder.setInitParameter("com.sun.jersey.config.property.packages", getResourcePackages());
+		servletHolder.setInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, getResourcePackages());
 		LOGGER.info("Configured resource packages: " + configuration.getResourcePackages());
 		return servletHolder;
 	}
