@@ -19,7 +19,8 @@ import org.hibernate.cfg.Environment;
 import com.google.common.collect.Lists;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
-import com.sun.jersey.server.impl.container.config.AnnotatedClassScanner;
+import com.sun.jersey.core.spi.scanning.PackageNamesScanner;
+import com.sun.jersey.spi.scanning.AnnotationScannerListener;
 import com.wideplay.warp.persist.PersistenceService;
 import com.wideplay.warp.persist.SessionFilter;
 import com.wideplay.warp.persist.UnitOfWork;
@@ -53,11 +54,15 @@ public class HibernateModule extends AbstractModule {
 	private void addAnnotatedEntities(AnnotationConfiguration configuration,
 			Iterable<String> entityPackages) {
 		checkNotNull(configuration);
-		final AnnotatedClassScanner scanner = new AnnotatedClassScanner(Entity.class);
+		
 		final List<String> entityClasses = Lists.newLinkedList();
 		for (String entityPackage : checkNotNull(entityPackages)) {
+			@SuppressWarnings("unchecked")
+			final AnnotationScannerListener listener = new AnnotationScannerListener(Entity.class);
+			final PackageNamesScanner scanner = new PackageNamesScanner(new String[] { entityPackage });
 			logger.info("Scanning " + entityPackage + " for entity classes");
-			for (Class<?> entityClass : scanner.scan(new String[] { entityPackage })) {
+			scanner.scan(listener);
+			for (Class<?> entityClass : listener.getAnnotatedClasses()) {
 				configuration.addAnnotatedClass(entityClass);
 				entityClasses.add(entityClass.getCanonicalName());
 			}
