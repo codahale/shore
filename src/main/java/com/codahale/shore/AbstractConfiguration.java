@@ -13,7 +13,7 @@ import javax.ws.rs.ext.Provider;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.server.bio.SocketConnector;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
@@ -114,13 +114,14 @@ public abstract class AbstractConfiguration {
 	/**
 	 * Returns a new {@link Connector} to be used by Jetty to response to HTTP
 	 * reqests. Override this method to return a specifically-configured
-	 * {@link Connector}. By default, a stock {@link SelectChannelConnector} is
-	 * returned.
+	 * {@link Connector}. By default, a stock {@link SocketConnector} is
+	 * returned. (If you're not running Linux 2.6.27+ on a 64-bit system, you
+	 * may want to override this to return a SelectChannelConnector.)
 	 * 
-	 * @return a {@link SelectChannelConnector}
+	 * @return a {@link SocketConnector}
 	 */
 	public Connector getConnector() {
-		return new SelectChannelConnector();
+		return new SocketConnector();
 	}
 	
 	/**

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.server.bio.SocketConnector;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlets.GzipFilter;
@@ -109,7 +109,7 @@ public class AbstractConfigurationTest {
 		
 		@Test
 		public void itHasAConnector() throws Exception {
-			assertThat(config.getConnector(), is(SelectChannelConnector.class));
+			assertThat(config.getConnector(), is(SocketConnector.class));
 		}
 		
 		@Test
