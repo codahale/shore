@@ -105,6 +105,7 @@ public class CommandFactoryTest {
 			assertThat(cmd.getText(), is(
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -h, --host=HOST      Which hostname to listen on\n" +
 				"   -p, --port=PORT      Which port to bind to"
 			));
 		}
@@ -121,6 +122,7 @@ public class CommandFactoryTest {
 			assertThat(cmd.getText(), is(
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -h, --host=HOST      Which hostname to listen on\n" +
 				"   -p, --port=PORT      Which port to bind to"
 			));
 			
@@ -138,6 +140,7 @@ public class CommandFactoryTest {
 			assertThat(cmd.getText(), is(
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -h, --host=HOST      Which hostname to listen on\n" +
 				"   -p, --port=PORT      Which port to bind to"
 			));
 			
@@ -157,6 +160,7 @@ public class CommandFactoryTest {
 				"\n" +
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -h, --host=HOST      Which hostname to listen on\n" +
 				"   -p, --port=PORT      Which port to bind to"
 			));
 		}
@@ -175,6 +179,7 @@ public class CommandFactoryTest {
 				"\n" +
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -h, --host=HOST      Which hostname to listen on\n" +
 				"   -p, --port=PORT      Which port to bind to"
 			));
 		}
@@ -193,6 +198,7 @@ public class CommandFactoryTest {
 				"\n" +
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -h, --host=HOST      Which hostname to listen on\n" +
 				"   -p, --port=PORT      Which port to bind to"
 			));
 		}
@@ -211,6 +217,7 @@ public class CommandFactoryTest {
 				"\n" +
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -h, --host=HOST      Which hostname to listen on\n" +
 				"   -p, --port=PORT      Which port to bind to"
 			));
 		}
@@ -229,6 +236,7 @@ public class CommandFactoryTest {
 				"\n" +
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -h, --host=HOST      Which hostname to listen on\n" +
 				"   -p, --port=PORT      Which port to bind to"
 			));
 		}

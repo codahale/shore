@@ -41,6 +41,7 @@ public class ServerCommand implements Runnable {
 	private static final int GRACEFUL_SHUTDOWN_PERIOD = 5000; //ms
 	private static final Logger LOGGER = Logger.getLogger(ServerCommand.class.getCanonicalName());
 	private final AbstractConfiguration configuration;
+	private final String host;
 	private final int port;
 	private final boolean gracefulShutdown;
 	private final Properties properties;
@@ -57,6 +58,27 @@ public class ServerCommand implements Runnable {
 	 */
 	public ServerCommand(AbstractConfiguration configuration, int port, boolean gracefulShutdown, Properties properties) {
 		this.configuration = checkNotNull(configuration);
+		this.host = null;
+		this.port = port;
+		this.gracefulShutdown = gracefulShutdown;
+		this.properties = checkNotNull(properties);
+	}
+	
+	/**
+	 * Creates a new {@link ServerCommand}.
+	 *
+	 * @param configuration
+	 *            the application's configuration
+	 * @param host
+	 *            the hostname to listen on
+	 * @param port
+	 *            the port to listen on
+	 * @param properties
+	 *            the connection properties
+	 */
+	public ServerCommand(AbstractConfiguration configuration, String host, int port, boolean gracefulShutdown, Properties properties) {
+		this.configuration = checkNotNull(configuration);
+		this.host = host;
 		this.port = port;
 		this.gracefulShutdown = gracefulShutdown;
 		this.properties = checkNotNull(properties);
@@ -64,6 +86,10 @@ public class ServerCommand implements Runnable {
 	
 	public AbstractConfiguration getConfiguration() {
 		return configuration;
+	}
+	
+	public String getHost() {
+		return host;
 	}
 	
 	public int getPort() {
@@ -115,6 +141,7 @@ public class ServerCommand implements Runnable {
 
 	private Connector buildConnector() {
 		final Connector connector = configuration.getConnector();
+		connector.setHost(host);
 		connector.setPort(port);
 		return connector;
 	}

@@ -28,12 +28,17 @@ public class ServerCommandTest {
 			this.properties = new Properties();
 			
 			
-			this.cmd = new ServerCommand(config, 8080, false, properties);
+			this.cmd = new ServerCommand(config, "localhost", 8080, false, properties);
 		}
 		
 		@Test
 		public void itHasAConfiguration() throws Exception {
 			assertThat(cmd.getConfiguration(), is(sameInstance(config)));
+		}
+		
+		@Test
+		public void itHasAHost() throws Exception {
+			assertThat(cmd.getHost(), is("localhost"));
 		}
 		
 		@Test

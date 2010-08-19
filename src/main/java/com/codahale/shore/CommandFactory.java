@@ -35,6 +35,7 @@ public class CommandFactory {
 	private final static String SERVER_USAGE_TEMPLATE =
 				"usage: {app} server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -h, --host=HOST      Which hostname to listen on\n" +
 				"   -p, --port=PORT      Which port to bind to";
 	private final static String SCHEMA_USAGE_TEMPLATE =
 		"usage: {app} schema -c <file> [--migration]\n" +
@@ -120,6 +121,8 @@ public class CommandFactory {
 		configOption.setRequired(true);
 		options.addOption(configOption);
 		
+		options.addOption("h", "host", true, null);
+		
 		final Option portOption = new Option("p", "port", true, null);
 		portOption.setRequired(true);
 		options.addOption(portOption);
@@ -137,9 +140,10 @@ public class CommandFactory {
 			} finally {
 				reader.close();
 			}
+			final String host = cmdLine.getOptionValue("h");
 			final int port = Integer.valueOf(cmdLine.getOptionValue("p"));
 			
-			return new ServerCommand(configuration, port, !cmdLine.hasOption("graceless"), properties);
+			return new ServerCommand(configuration, host, port, !cmdLine.hasOption("graceless"), properties);
 		} catch (ParseException e) {
 			return new HelpCommand(serverUsage(e.getMessage()), System.out);
 		} catch (FileNotFoundException e) {
