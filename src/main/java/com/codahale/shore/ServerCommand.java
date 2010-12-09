@@ -41,10 +41,10 @@ public class ServerCommand implements Runnable {
 	private static final int GRACEFUL_SHUTDOWN_PERIOD = 5000; //ms
 	private static final Logger LOGGER = Logger.getLogger(ServerCommand.class.getCanonicalName());
 	private final AbstractConfiguration configuration;
-	private final String host;
 	private final int port;
 	private final boolean gracefulShutdown;
 	private final Properties properties;
+	private String jarent;
 	
 	/**
 	 * Creates a new {@link ServerCommand}.
@@ -58,28 +58,8 @@ public class ServerCommand implements Runnable {
 	 */
 	public ServerCommand(AbstractConfiguration configuration, int port, boolean gracefulShutdown, Properties properties) {
 		this.configuration = checkNotNull(configuration);
-		this.host = null;
 		this.port = port;
-		this.gracefulShutdown = gracefulShutdown;
-		this.properties = checkNotNull(properties);
-	}
-	
-	/**
-	 * Creates a new {@link ServerCommand}.
-	 *
-	 * @param configuration
-	 *            the application's configuration
-	 * @param host
-	 *            the hostname to listen on
-	 * @param port
-	 *            the port to listen on
-	 * @param properties
-	 *            the connection properties
-	 */
-	public ServerCommand(AbstractConfiguration configuration, String host, int port, boolean gracefulShutdown, Properties properties) {
-		this.configuration = checkNotNull(configuration);
-		this.host = host;
-		this.port = port;
+		this.jarent = "";
 		this.gracefulShutdown = gracefulShutdown;
 		this.properties = checkNotNull(properties);
 	}
@@ -88,14 +68,19 @@ public class ServerCommand implements Runnable {
 		return configuration;
 	}
 	
-	public String getHost() {
-		return host;
-	}
-	
 	public int getPort() {
 		return port;
 	}
 	
+	public String getJarent() {
+		return jarent;
+	}
+	
+	public void setJarent(String jarent)
+	{
+		this.jarent = jarent;
+	}
+
 	public Properties getProperties() {
 		return properties;
 	}
@@ -141,7 +126,6 @@ public class ServerCommand implements Runnable {
 
 	private Connector buildConnector() {
 		final Connector connector = configuration.getConnector();
-		connector.setHost(host);
 		connector.setPort(port);
 		return connector;
 	}
@@ -173,16 +157,19 @@ public class ServerCommand implements Runnable {
 	}
 
 	private Injector buildInjector() {
+		HibernateModule mod = buildHibernateModule();
+		//mod.addJar(getJarent());
 		return Guice.createInjector(
 			configuration.getStage(),
 			Iterables.concat(
 				configuration.getModules(),
-				ImmutableList.of(buildHibernateModule())
+				ImmutableList.of((Module)mod)
 			)
 		);
 	}
 
-	private Module buildHibernateModule() {
-		return new HibernateModule(LOGGER, properties, configuration.getEntityPackages());
+	private HibernateModule buildHibernateModule() {
+		return new HibernateModule(LOGGER, properties, configuration.getEntityPackages(), getJarent());
 	}
 }
+

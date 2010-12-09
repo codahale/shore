@@ -2,6 +2,8 @@ package com.codahale.shore.modules;
 
 import static com.google.common.base.Preconditions.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +22,7 @@ import com.google.common.collect.Lists;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.sun.jersey.core.spi.scanning.PackageNamesScanner;
+import com.sun.jersey.core.spi.scanning.JarFileScanner;
 import com.sun.jersey.spi.scanning.AnnotationScannerListener;
 import com.wideplay.warp.persist.PersistenceService;
 import com.wideplay.warp.persist.SessionFilter;
@@ -48,11 +51,38 @@ public class HibernateModule extends AbstractModule {
 		configureDefaultProperties(configuration);
 		configuration.addProperties(checkNotNull(properties));
 		configureRequiredProperties(configuration);
-		addAnnotatedEntities(configuration, checkNotNull(entityPackages));
+		addAnnotatedEntities(configuration, checkNotNull(entityPackages), "");
+	}
+	
+	/**
+	 * Creates a new {@link Guice} module to configure Hibernate.
+	 * 
+	 * @param properties
+	 */
+	public HibernateModule(Logger logger, Properties properties, Collection<String> entityPackages,
+			String jarent) {
+		this.logger = checkNotNull(logger);
+		this.configuration = new AnnotationConfiguration();
+		configureDefaultProperties(configuration);
+		configuration.addProperties(checkNotNull(properties));
+		configureRequiredProperties(configuration);
+		addJar(jarent);
+		addAnnotatedEntities(configuration, checkNotNull(entityPackages), jarent);
+	}
+	
+	public void addJar( String file )
+	{
+		if ( null == file || ( file.length() <= 0 ) )
+			return;
+		File f = new File(file);
+		if (f.exists())
+			configuration.addJar(f);	
+
+		logger.info("Included JAR with Hibernate entities... [" + file + "]");
 	}
 
 	private void addAnnotatedEntities(AnnotationConfiguration configuration,
-			Iterable<String> entityPackages) {
+			Iterable<String> entityPackages, String jarent ) {
 		checkNotNull(configuration);
 		
 		final List<String> entityClasses = Lists.newLinkedList();
@@ -61,10 +91,29 @@ public class HibernateModule extends AbstractModule {
 			final AnnotationScannerListener listener = new AnnotationScannerListener(Entity.class);
 			final PackageNamesScanner scanner = new PackageNamesScanner(new String[] { entityPackage });
 			logger.info("Scanning " + entityPackage + " for entity classes");
+			
 			scanner.scan(listener);
 			for (Class<?> entityClass : listener.getAnnotatedClasses()) {
 				configuration.addAnnotatedClass(entityClass);
 				entityClasses.add(entityClass.getCanonicalName());
+			}
+			
+			if ( jarent != null && jarent.length() > 0 )
+			{
+				//final JarFileScanner scanner_jar = new JarFileScanner();
+				logger.info("Scanning JAR file " + jarent + " for entity classes");
+				
+				try {
+					File f = new File(jarent);
+					JarFileScanner.scan( new File(jarent), "", listener);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				for (Class<?> entityClass : listener.getAnnotatedClasses()) {
+					configuration.addAnnotatedClass(entityClass);
+					entityClasses.add(entityClass.getCanonicalName());
+				}
 			}
 		}
 		Collections.sort(entityClasses);
@@ -111,3 +160,4 @@ public class HibernateModule extends AbstractModule {
 		return configuration;
 	}
 }
+
