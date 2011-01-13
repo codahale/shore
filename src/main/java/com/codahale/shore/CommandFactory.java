@@ -35,8 +35,9 @@ public class CommandFactory {
 	private final static String SERVER_USAGE_TEMPLATE =
 				"usage: {app} server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
+				"   -h, --host=HOST      Which hostname to listen on\n" +
 				"   -p, --port=PORT      Which port to bind to\n" +
-				"   -jarent, --jar_entities=jar_file_name		JAR file to entities";
+				"   -jarent, --jar_entities=JAR_FILE_NAME		JAR file to JPA entities";
 	private final static String SCHEMA_USAGE_TEMPLATE =
 		"usage: {app} schema -c <file> [--migration]\n" +
 		"   -c, --config=FILE    Which Hibernate config file to use\n" +
@@ -121,6 +122,8 @@ public class CommandFactory {
 		configOption.setRequired(true);
 		options.addOption(configOption);
 		
+		options.addOption("h", "host", true, null);
+		
 		final Option portOption = new Option("p", "port", true, null);
 		portOption.setRequired(true);
 		options.addOption(portOption);
@@ -142,13 +145,19 @@ public class CommandFactory {
 			} finally {
 				reader.close();
 			}
+			final String host = cmdLine.getOptionValue("h");			
 			final int port = Integer.valueOf(cmdLine.getOptionValue("p"));		
 			
 			final String jarent = cmdLine.getOptionValue("jarent");
 			
-			ServerCommand ser = new ServerCommand(configuration, port, !cmdLine.hasOption("graceless"), properties);
+			ServerCommand ser = new ServerCommand(configuration, host, port, !cmdLine.hasOption("graceless"), properties);
+			
+			/* Use of method setJarent(): choose to not change 
+			 * 	the ServerCommand constructor above (rosfran) 
+			 */
 			if ( jarent != null && jarent.length() > 0 )
 				ser.setJarent(jarent);
+			
 			return ser;
 		} catch (ParseException e) {
 			return new HelpCommand(serverUsage(e.getMessage()), System.out);

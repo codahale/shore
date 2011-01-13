@@ -106,7 +106,8 @@ public class CommandFactoryTest {
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
 				"   -h, --host=HOST      Which hostname to listen on\n" +
-				"   -p, --port=PORT      Which port to bind to"
+				"   -p, --port=PORT      Which port to bind to\n" +
+				"   -jarent, --jar_entities=JAR_FILE_NAME		JAR file to JPA entities"
 			));
 		}
 	}
@@ -123,7 +124,8 @@ public class CommandFactoryTest {
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
 				"   -h, --host=HOST      Which hostname to listen on\n" +
-				"   -p, --port=PORT      Which port to bind to"
+				"   -p, --port=PORT      Which port to bind to\n" +
+				"   -jarent, --jar_entities=JAR_FILE_NAME		JAR file to JPA entities"
 			));
 			
 		}
@@ -141,7 +143,8 @@ public class CommandFactoryTest {
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
 				"   -h, --host=HOST      Which hostname to listen on\n" +
-				"   -p, --port=PORT      Which port to bind to"
+				"   -p, --port=PORT      Which port to bind to\n" +
+				"   -jarent, --jar_entities=JAR_FILE_NAME		JAR file to JPA entities"
 			));
 			
 		}
@@ -161,7 +164,8 @@ public class CommandFactoryTest {
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
 				"   -h, --host=HOST      Which hostname to listen on\n" +
-				"   -p, --port=PORT      Which port to bind to"
+				"   -p, --port=PORT      Which port to bind to\n" +
+				"   -jarent, --jar_entities=JAR_FILE_NAME		JAR file to JPA entities"
 			));
 		}
 	}
@@ -180,7 +184,8 @@ public class CommandFactoryTest {
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
 				"   -h, --host=HOST      Which hostname to listen on\n" +
-				"   -p, --port=PORT      Which port to bind to"
+				"   -p, --port=PORT      Which port to bind to\n" +
+				"   -jarent, --jar_entities=JAR_FILE_NAME		JAR file to JPA entities"
 			));
 		}
 	}
@@ -199,7 +204,8 @@ public class CommandFactoryTest {
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
 				"   -h, --host=HOST      Which hostname to listen on\n" +
-				"   -p, --port=PORT      Which port to bind to"
+				"   -p, --port=PORT      Which port to bind to\n" +
+				"   -jarent, --jar_entities=JAR_FILE_NAME		JAR file to JPA entities"
 			));
 		}
 	}
@@ -218,7 +224,8 @@ public class CommandFactoryTest {
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
 				"   -h, --host=HOST      Which hostname to listen on\n" +
-				"   -p, --port=PORT      Which port to bind to"
+				"   -p, --port=PORT      Which port to bind to\n" +
+				"   -jarent, --jar_entities=JAR_FILE_NAME		JAR file to JPA entities"
 			));
 		}
 	}
@@ -237,7 +244,8 @@ public class CommandFactoryTest {
 				"usage: shoretest server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
 				"   -h, --host=HOST      Which hostname to listen on\n" +
-				"   -p, --port=PORT      Which port to bind to"
+				"   -p, --port=PORT      Which port to bind to\n" +
+				"   -jarent, --jar_entities=JAR_FILE_NAME		JAR file to JPA entities"
 			));
 		}
 	}
@@ -278,6 +286,25 @@ public class CommandFactoryTest {
 			);
 		}
 
+		private void assertCorrectServerCommand(final Runnable runnable) {
+			assertThat(runnable, is(ServerCommand.class));
+
+			final ServerCommand cmd = (ServerCommand) runnable;
+			assertThat(cmd.getConfiguration(), is(sameInstance(config)));
+			assertThat(cmd.getPort(), is(8080));
+			assertThat(cmd.getGracefulShutdown(), is(true));
+			assertThat(cmd.getProperties().getProperty(Environment.URL), is("jdbc:hsqldb:mem:ShoreTest"));
+		}
+	}
+	
+	public static class Server_With_Jar_Entities_Option {
+		@Test
+		public void itReturnsAServerCommand() throws Exception {
+			assertCorrectServerCommand(
+				parse("server", "--jar_entities=src/test/resources/jar_entities.jar")
+			);
+		}
+		
 		private void assertCorrectServerCommand(final Runnable runnable) {
 			assertThat(runnable, is(ServerCommand.class));
 
