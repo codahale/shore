@@ -36,7 +36,8 @@ public class CommandFactory {
 				"usage: {app} server -c <file> -p <port>\n" +
 				"   -c, --config=FILE    Which Hibernate config file to use\n" +
 				"   -h, --host=HOST      Which hostname to listen on\n" +
-				"   -p, --port=PORT      Which port to bind to";
+				"   -p, --port=PORT      Which port to bind to\n" +
+				"   -jarent, --jar_entities=JAR_FILE_NAME		JAR file to JPA entities";
 	private final static String SCHEMA_USAGE_TEMPLATE =
 		"usage: {app} schema -c <file> [--migration]\n" +
 		"   -c, --config=FILE    Which Hibernate config file to use\n" +
@@ -127,6 +128,10 @@ public class CommandFactory {
 		portOption.setRequired(true);
 		options.addOption(portOption);
 		
+		final Option jarOption = new Option("jarent", "jar_entities", true, null);
+		portOption.setRequired(true);
+		options.addOption(jarOption);
+		
 		options.addOption(null, "graceless", false, null);
 		
 		try {
@@ -140,10 +145,20 @@ public class CommandFactory {
 			} finally {
 				reader.close();
 			}
-			final String host = cmdLine.getOptionValue("h");
-			final int port = Integer.valueOf(cmdLine.getOptionValue("p"));
+			final String host = cmdLine.getOptionValue("h");			
+			final int port = Integer.valueOf(cmdLine.getOptionValue("p"));		
 			
-			return new ServerCommand(configuration, host, port, !cmdLine.hasOption("graceless"), properties);
+			final String jarent = cmdLine.getOptionValue("jarent");
+			
+			ServerCommand ser = new ServerCommand(configuration, host, port, !cmdLine.hasOption("graceless"), properties);
+			
+			/* Use of method setJarent(): choose to not change 
+			 * 	the ServerCommand constructor above (rosfran) 
+			 */
+			if ( jarent != null && jarent.length() > 0 )
+				ser.setJarent(jarent);
+			
+			return ser;
 		} catch (ParseException e) {
 			return new HelpCommand(serverUsage(e.getMessage()), System.out);
 		} catch (FileNotFoundException e) {
@@ -183,3 +198,4 @@ public class CommandFactory {
 		return builder.append(template.replace("{app}", configuration.getExecutableName())).toString();
 	}
 }
+
